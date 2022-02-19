@@ -4,6 +4,10 @@ Synthesizes data from
 * list of eco moves https://github.com/arcanous/eco-chess/blob/master/tree-with-moves.json
 * 
 
+Other potential sources
+* name database https://github.com/lichess-org/chess-openings
+* raw lichess png data https://database.lichess.org/
+
 Data transformations in folder `python_data_transformations` which are embedded in the visualization as json files in the public folder.
 
 # Legacy info
