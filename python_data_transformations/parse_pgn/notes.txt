@@ -1,7 +1,0 @@
-
-Count of games in files
-* 2020-01.pgn
-
-Time to go through games
-
-*  `read_game` 
