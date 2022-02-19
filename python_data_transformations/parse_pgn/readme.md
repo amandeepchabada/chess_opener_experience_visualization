@@ -16,7 +16,7 @@ How the output is structured
         "b": 212,  # number of black wins in games this fen occured
         "w": 244,  # number of white wins in games this fen occured
         "t": 18,  # number of ties in games this fen occured
-        "nxt": {  # next move
+        "nxt": {  # next move in long algebraic notation
           "e7e6": 43,  # number of games where this move was played after this fen
           "e7e5": 262,
           "d7d5": 48
