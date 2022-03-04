@@ -24,6 +24,8 @@
         width: 100%;
         display: flex;
         flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
 	main {

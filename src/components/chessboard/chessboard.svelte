@@ -36,18 +36,35 @@
 </script>
 
 <svelte:head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
-	<link rel="stylesheet" href="./chessboard-1.0.0.min.css"/>
-	<script src="./chessboard-1.0.0.min.js" on:load={initBoard}> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+    <link rel="stylesheet" href="./chessboard-1.0.0.min.css"/>
+    <script src="./chessboard-1.0.0.min.js" on:load={initBoard}> </script>
 </svelte:head>
 
-{#if board===undefined}
-	<div style="width: 400px, height:400px background-color: gray">
-        Loading...
-    </div>
+<div class="container">
+
+    {#if board===undefined}
+        <div style="width: 400px; height:400px">
+            Loading...
+        </div>
+        <button id="startBtn">Start Position</button>
+        <button id="clearBtn">Clear Board</button>
+    {/if}
+
+    <div bind:this={el} style="width: 400px"></div>
     <button id="startBtn">Start Position</button>
     <button id="clearBtn">Clear Board</button>
-{/if}
+</div>
 
-<div bind:this={el} style="width: 400px"></div>
 
+<style>
+    .container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 500px;
+        background-color: yellow;
+    }
+</style>
