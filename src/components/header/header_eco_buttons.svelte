@@ -1,5 +1,5 @@
 <script>
-    import { curr_fen } from '../../stores';
+    import { curr_fen } from '../../state';
     import * as eco_index from './eco_indexed.json';
 
     function construct_eco_list() {

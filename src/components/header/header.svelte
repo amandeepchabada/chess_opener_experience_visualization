@@ -1,23 +1,25 @@
 <script>
-    import {  } from '../../stores';
+    import { game_data } from '../../state';
 </script>
 
 <div class='container'>
     <h1>
-        Chessboard Visualization
-    </h1>
-    <h2>
+        Chessboard Visualization:
         A project for CS549 Visual Analytics
-    </h2>
+    </h1>
 </div>
 
 <style>
+    h1 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
     div.container {
         display: flex;
         flex-direction: row;
-        max-width: 99vw;
-        overflow-x: scroll;
+        justify-content: center;
+        align-items: flex-end;
         background-color: gray;
-        overflow: hidden;
     }
 </style>

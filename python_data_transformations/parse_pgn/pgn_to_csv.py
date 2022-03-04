@@ -10,8 +10,8 @@ data = {
     3: {}, # expert
 }
 
-pgn = open("2020-01.pgn")
-
+input_filename = "2022-01.pgn" # "2020-01.pgn"
+pgn = open(input_filename)
 
 def classify_game(black, white):
     """ classify game based on black and white elo 
@@ -57,6 +57,7 @@ def extract_fens_uci(game, x=5):
 def is_game_invalid(game):
     """ returns true if all checks passed """
 
+    if not game: return True  # if falsy
     elo = game.headers['WhiteElo'] and game.headers['BlackElo']
     time = len(game.headers['TimeControl']) <= 4  # true if over 100 seconds or more than 10s increment
 
@@ -105,24 +106,35 @@ def add_fen_data(headers, fen, exp, next_uci):
 # main code
 start = perf_counter()
 invalid_games = 0
-games = 10_00_000
+games = 100_000_000
+games_actual = 0
 for i in tqdm(range(games)):
+    # check game validity
     game = chess.pgn.read_game(pgn)
     if is_game_invalid(game):
         invalid_games += 1
         continue
-    
+    games_actual += 1
+
+    # parse game and update
     exp = classify_game(game.headers['WhiteElo'], game.headers['BlackElo'])
     fens, ucis = extract_fens_uci(game)
     for i, fen in enumerate(fens):
         if len(ucis) == i+1: break
         add_fen_data(game.headers, fen, exp, ucis[i+1])
 
+    # backup current data
+    if games_actual % 100_000 == 0:
+        filename = f'backup_2022_{str(games_actual)}.json'
+        with open(filename, "w") as wf:
+            json.dump(data, wf)
+
 
 end = perf_counter()
 print('time:', end-start)
 print('invalid games', invalid_games)
 print('valid games', games - invalid_games)
-with open(f'first_try_{str(games)}.json', "w") as write_file:
+filename = "v1_{:e}.json".format(games_actual)
+with open(filename, "w") as write_file:
     json.dump(data, write_file, indent=2)
 # print(data)

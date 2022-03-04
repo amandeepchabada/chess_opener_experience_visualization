@@ -1,6 +1,6 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
-    import { curr_fen } from '../../stores';
+    import { curr_fen } from '../../state';
 
 	let board;
 	let el;

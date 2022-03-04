@@ -4,3 +4,5 @@
 .DS_Store
 
 *.pgn
+
+/python_data_transformations/parse_pgn/exported_json/*

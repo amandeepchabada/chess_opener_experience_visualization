@@ -1,5 +1,5 @@
 <script>
-    import {  } from '../../stores';
+    import {  } from '../../state';
 </script>
 
 <div class='container'>
