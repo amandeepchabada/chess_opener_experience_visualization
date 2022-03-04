@@ -1,33 +1,38 @@
 <script>
-	import { onMount } from 'svelte';
-	
+	import { onMount, onDestroy } from 'svelte';
+    import { curr_fen } from '../../stores';
+
 	let board;
 	let el;
+    let fen = 'start';
 	
 	function onDrop (source, target, piece, newPos, oldPos, orientation) {
-  	console.log('Source: ' + source)
-  	console.log('Target: ' + target)
-  	console.log('Piece: ' + piece)
-  	console.log('New position: ' + Chessboard.objToFen(newPos))
-  	console.log('Old position: ' + Chessboard.objToFen(oldPos))
-  	console.log('Orientation: ' + orientation)
-  	console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        console.log('Source: ' + source)
+        console.log('Target: ' + target)
+        console.log('Piece: ' + piece)
+        console.log('New position: ' + Chessboard.objToFen(newPos))
+        console.log('Old position: ' + Chessboard.objToFen(oldPos))
+        console.log('Orientation: ' + orientation)
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 	}
 	
 	function initBoard() {
 		board = Chessboard(el, {
 			draggable: true,
-  		position: 'start',
-  		onDrop: onDrop,
-  		sparePieces: true});
+            position: fen || 'start',
+            onDrop: onDrop,
+            sparePieces: true
+        });
 	}
 	
 	onMount(() => {
-    console.log('Mounted');
-  });
+        console.log('Mounted');
+    });
 	
-	//How to implement the onDrop event?
-	
+    const unsubscribeFen = curr_fen.subscribe(new_fen => {
+        fen = new_fen;
+    })
+    onDestroy(unsubscribeFen);  // prevent memory leak
 </script>
 
 <svelte:head>
@@ -35,12 +40,14 @@
 	<link rel="stylesheet" href="./chessboard-1.0.0.min.css"/>
 	<script src="./chessboard-1.0.0.min.js" on:load={initBoard}> </script>
 </svelte:head>
-	
+
 {#if board===undefined}
-	<div style="width: 400px, height:400px background-color: gray"></div>
+	<div style="width: 400px, height:400px background-color: gray">
+        Loading...
+    </div>
+    <button id="startBtn">Start Position</button>
+    <button id="clearBtn">Clear Board</button>
 {/if}
 
 <div bind:this={el} style="width: 400px"></div>
 
-<button id="startBtn">Start Position</button>
-<button id="clearBtn">Clear Board</button>

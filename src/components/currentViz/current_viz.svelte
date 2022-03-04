@@ -4,15 +4,13 @@
 
 <div class='container'>
     <h1>
-        Chessboard Visualization
+        Current board viz
     </h1>
-    <h2>
-        A project for CS549 Visual Analytics
-    </h2>
 </div>
 
 <style>
     div.container {
+        flex: 1;
         display: flex;
         flex-direction: row;
         max-width: 99vw;
