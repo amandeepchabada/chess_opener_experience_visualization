@@ -1,21 +1,32 @@
 <script>
+	import { gameDataStore } from './state';
+
 	import Chessboard from './components/chessboard/chessboard.svelte';
 	import Header from './components/header/header.svelte';
     import CurrentViz from './components/currentViz/current_viz.svelte';
     import FutureViz from './components/futureViz/future_viz.svelte';
 
-	export let name;
-
+	const jsonFilename = 'games_2022_2M.json'; // TODO trim and import larger files
+	let fetchJson = fetch(jsonFilename)
+		.then(res => res.json())
+		.then(data => {gameDataStore.set(data)});
 </script>
 
 <main>
 	<Header />
 
-    <div class='viz-container'>
-        <CurrentViz />
-        <Chessboard />
-        <FutureViz />
-    </div>
+	{#await fetchJson}
+		<p>Loading...</p>
+	{:then result} 
+		<div class='viz-container'>
+			<CurrentViz />
+			<Chessboard />
+			<FutureViz />
+		</div>
+	{:catch error}
+		<p style="color: red">While loading an error occurred: {error}</p>
+	{/await}
+
     <p>Build with Svelte. Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
 

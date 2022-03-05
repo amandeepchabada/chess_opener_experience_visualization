@@ -1,5 +1,5 @@
 <script>
-    import { game_data } from '../../state';
+    import { gameDataStore } from '../../state';
 </script>
 
 <div class='container'>

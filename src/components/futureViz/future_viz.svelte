@@ -1,11 +1,13 @@
 <script>
     import StackedBar from './stacked_bar.svelte'
     import {onDestroy} from 'svelte'
-    import { game_data, fenDataStore } from '../../state';
+    import { gameDataStore, fenDataStore } from '../../state';
     
     let aggNextMove = {}  // aggreagate next move (sum over levels)
     let nextMovesArr = [];  // array of moves and counts: eg {"move": "b2g2", count: 42}
     let nextMovesTotal = 0;  // total sum of next moves
+
+    const unsubscribeData = gameDataStore.subscribe(data => console.log({data}))
 
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
         console.log({newDataArr})
@@ -28,10 +30,11 @@
         console.log({nextMovesArr, aggNextMove, nextMovesTotal})
     })
     onDestroy(unsubscribeFen);  // prevent memory leak
+    onDestroy(unsubscribeData);
 </script>
 
 <div class='container'>
-    <StackedBar {aggNextMove} {nextMovesArr} {nextMovesTotal}/>
+    <StackedBar {aggNextMove} {nextMovesArr} {nextMovesTotal} h={500}/>
 </div>
 
 <style>

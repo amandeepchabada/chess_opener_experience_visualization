@@ -2,6 +2,7 @@
     export let aggNextMove;  // aggreagate next move (sum over levels)
     export let nextMovesArr;  // array of moves and counts: eg {"move": "b2g2", count: 42}
     export let nextMovesTotal;  // total sum of next moves
+    export let h; // height
 
     const colors = ['#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1'];
 
@@ -18,7 +19,6 @@
         tooltip.style.display = "none";
     }
 
-    const h = 560;  // height
 </script>
 
 <svg width='100px' height={h} >
