@@ -2,8 +2,8 @@ import { writable, derived } from "svelte/store";
 
 export const gameDataStore = writable(false); //game_data_1M; // change if more data is needed
 
-export const initial_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0";
-export const test_fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1";
+export const initial_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+//export const test_fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1";
 export const curr_fen = writable(initial_fen); // TODO: ensure initial_fen is used at some point in the future
 
 const test_fenData = [
@@ -14,16 +14,19 @@ const test_fenData = [
 ]
 
 export const fenDataStore = derived(  // array of level objects
-    curr_fen, 
-    $curr_fen => {
-        console.log('setting new fen', $curr_fen)
-        if ($curr_fen == initial_fen) return test_fenData;  // do not change if set to first move
-        return Array(4).map((_, i) => {  // loop over 4 levels
-            if (game_data[i.toString()] == undefined){
-                window.alert('New fen not recognized:' + $curr_fen);  // throw user visible error
-                return test_fenData;
+    [curr_fen, gameDataStore], 
+    ([$curr_fen, $gameDataStore]) => {
+        if (!$gameDataStore) return test_fenData
+        console.log('setting new fen', $curr_fen, $gameDataStore)
+        const vals = ['0', '1', '2', '3'].map(i => {  // loop over 4 levels
+            if ($gameDataStore[i][$curr_fen] == undefined) {
+               window.alert(`New fen not recognized for ${i}: ` + $curr_fen);  // throw user visible error
+                return $gameDataStore[i][initial_fen];
             }
-            return game_data[i.toString()][$curr_fen]  // grab data for level
-    })},
+            return $gameDataStore[i][$curr_fen]  // grab data for level
+        });
+        console.log({vals})
+        return vals
+    },
     test_fenData  // initial value
 )

@@ -1,5 +1,5 @@
 <script>
-    import StackedBar from './stacked_bar.svelte'
+    import Chart from './parallel_axis_stacked_bars.svelte';
     import {onDestroy} from 'svelte'
     import { gameDataStore, fenDataStore } from '../../state';
     
@@ -13,22 +13,28 @@
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
         console.log({newDataArr})
         aggNextMove = newDataArr.reduce((previousValue, currentValue, i_reduce) => {
-                let sum = {}
-                Object.entries(currentValue['nxt']).forEach(([move, count], i) => {  // loop over next moves
-                    const prev = previousValue[move] ? previousValue[move] : 0; // if not defined, use 0
-                    sum[move] = count + prev;
+                let newValue = {}
+                Object.entries(currentValue['nxt']).forEach(([_, datum], i) => {  // loop over next moves
+                    const fen = datum[0];
+                    const count = datum[1][0];
+                    const san = datum[1][1];
+                    const prev = previousValue[fen] ? previousValue[fen][0] : 0; // if not defined, use 0
+                    const sum  = parseInt(count) + prev;
+                    newValue[fen] = [sum, san]
                 });
-                return {...previousValue, ...sum};  // overwrite previous values with new sums
+                return {...previousValue, ...newValue};  // overwrite previous values with new sums
             },
             {} // initial val
         );
         let accCount = 0;  // count previous sums, useful for translating bars
-        nextMovesArr = Object.entries(aggNextMove).map(([move, count]) => {
+        let tmpMovesArr = Object.entries(aggNextMove).sort((a,b) => b[1][0] - a[1][0]);   // sort by count
+        console.log(tmpMovesArr)
+        nextMovesArr = tmpMovesArr.map(([fen, [count, san]]) => {  // transform to object from nested arrays
             accCount += count;
-            return {move, count, accCount, newDataArr}
-        }); 
-        nextMovesTotal = nextMovesArr.reduce((prev, {move, count, prevCount}) => prev + count, 0);
-        console.log({nextMovesArr, aggNextMove, nextMovesTotal})
+            return {san, count, accCount, fen}
+        });
+        nextMovesTotal = nextMovesArr[nextMovesArr.length - 1]['accCount'];
+        console.log('Parsed future move viz data:', {nextMovesArr, aggNextMove, nextMovesTotal})
     });
 
     onDestroy(unsubscribeFen);  // prevent memory leak(s)
@@ -36,13 +42,15 @@
 </script>
 
 <div class='container'>
-    <StackedBar {aggNextMove} {nextMovesArr} {nextMovesTotal} h={500}/>
+    <Chart {aggNextMove} {nextMovesArr} {nextMovesTotal} h={560}/>
 </div>
 
 <style>
     div.container {
+        display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-evenly;
+        flex-direction: row;
         flex: 1;
         min-width: 400px;
         background-color: gray;

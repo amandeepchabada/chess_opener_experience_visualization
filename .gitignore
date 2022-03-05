@@ -5,4 +5,5 @@
 
 *.pgn
 
+/python_data_transformations/parse_pgn/*.json
 /python_data_transformations/parse_pgn/exported_json/*

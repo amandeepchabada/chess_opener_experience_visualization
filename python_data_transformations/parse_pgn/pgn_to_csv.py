@@ -1,3 +1,4 @@
+from audioop import reverse
 import chess.pgn
 from time import perf_counter
 from tqdm import tqdm
@@ -34,9 +35,8 @@ def classify_game(black, white):
         return 2
     return 3
 
-
 def extract_fens_uci(game, x=5):
-    """ returns array of fens for first x+1 moves """
+    """ returns array of fens for first x+1 moves, not including first one """
 
     fens = []
     ucis = []
@@ -54,6 +54,36 @@ def extract_fens_uci(game, x=5):
     return fens, ucis
 
 
+
+def extract_fens(game, x=5):
+    """ returns array of fens for first x+1 moves, including first one """
+
+    fens = []
+    board = game.board()
+    for i, move in enumerate(game.mainline_moves()):
+        fen = board.fen()
+        fens.append(fen)
+        if i > x: break
+        board.push(move)
+
+    return fens
+
+def extract_fens_moveStrs(game, x=5):
+    """ returns array of fens for first x+1 moves, including first one """
+
+    fens = []
+    moveStrs = []
+    board = game.board()
+    for i, move in enumerate(game.mainline_moves()):
+        fen = board.fen()
+        fens.append(fen)
+        moveStrs.append(board.san(move))
+        if i > x: break
+        board.push(move)
+
+    return fens, moveStrs
+
+
 def is_game_invalid(game):
     """ returns true if all checks passed """
 
@@ -64,7 +94,7 @@ def is_game_invalid(game):
     return time and elo
 
 
-def add_fen_data(headers, fen, exp, next_uci):
+def add_fen_data(headers, fen, exp, next_fen, moveStr):
     """ add games to data object """
 
     # update fen data
@@ -82,10 +112,10 @@ def add_fen_data(headers, fen, exp, next_uci):
         # update result count
         data[exp][fen][res] += 1
         # add next move
-        if next_uci in data[exp][fen]['nxt']:
-            data[exp][fen]['nxt'][next_uci] += 1
+        if next_fen in data[exp][fen]['nxt']:
+            data[exp][fen]['nxt'][next_fen][0] += 1
         else:
-            data[exp][fen]['nxt'][next_uci] = 1
+            data[exp][fen]['nxt'][next_fen] = [1, moveStr]
 
     # add new fen
     else:
@@ -98,7 +128,7 @@ def add_fen_data(headers, fen, exp, next_uci):
             'w': wht,  # black win count
             't': tie,  # tie count
             'nxt': {  # next move count
-                next_uci: 1
+                next_fen: [1, moveStr]
             }
         }
 
@@ -106,8 +136,11 @@ def add_fen_data(headers, fen, exp, next_uci):
 # main code
 start = perf_counter()
 invalid_games = 0
-games = 100_000_000
+games = 2_000_000 #2_000_000 #10_000 # 2_000_000 #1_000_000
+backup_every = 100_000
+backup_games = False
 games_actual = 0
+
 for i in tqdm(range(games)):
     # check game validity
     game = chess.pgn.read_game(pgn)
@@ -118,23 +151,55 @@ for i in tqdm(range(games)):
 
     # parse game and update
     exp = classify_game(game.headers['WhiteElo'], game.headers['BlackElo'])
-    fens, ucis = extract_fens_uci(game)
+    fens, moveStrs = extract_fens_moveStrs(game)
     for i, fen in enumerate(fens):
-        if len(ucis) == i+1: break
-        add_fen_data(game.headers, fen, exp, ucis[i+1])
+        if len(fens) == i+1: break
+        add_fen_data(game.headers, fen, exp, fens[i+1], moveStrs[i])
 
     # backup current data
-    if games_actual % 100_000 == 0:
+    if backup_games and games_actual % backup_every == 0:
         filename = f'backup_2022_{str(games_actual)}.json'
         with open(filename, "w") as wf:
             json.dump(data, wf)
 
-
+# save full df to json
 end = perf_counter()
 print('time:', end-start)
 print('invalid games', invalid_games)
 print('valid games', games - invalid_games)
-filename = "v1_{:e}.json".format(games_actual)
+filename = "v2_{:e}.json".format(games_actual)
 with open(filename, "w") as write_file:
     json.dump(data, write_file, indent=2)
+
+# filter to only show top 10 next moves and save
+
+# Function to sort hte list by second item of tuple
+def Sort_Tuple(tup): 
+    # https://www.geeksforgeeks.org/python-program-to-sort-a-list-of-tuples-by-second-item/
+    # reverse = None (Sorts in Ascending order) 
+    # key is set to sort using second element of 
+    # sublist lambda has been used 
+    tup.sort(key = lambda x: x[1], reverse=True) 
+    return tup 
+
+# top 10
+for level, fens in data.items():
+    for fen, d in fens.items():
+        nxtArr = list(d['nxt'].items())  # [(fen, count), ...]
+        sortedArr = Sort_Tuple(nxtArr)
+        data[level][fen]['nxt'] = sortedArr[:10]
+
+filename = "v2_filt10_{:e}.json".format(games_actual)
+with open(filename, "w") as write_file:
+    json.dump(data, write_file) #, indent=2)
+
+# top 5
+for level, fens in data.items():
+    for fen, d in fens.items():
+        data[level][fen]['nxt'] = d['nxt'][:5]
+
+filename = "v2_filt5_{:e}.json".format(games_actual)
+with open(filename, "w") as write_file:
+    json.dump(data, write_file) #, indent=2)
+
 # print(data)
