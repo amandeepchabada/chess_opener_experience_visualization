@@ -6,8 +6,9 @@
     let aggNextMove = {}  // aggreagate next move (sum over levels)
     let nextMovesArr = [];  // array of moves and counts: eg {"move": "b2g2", count: 42}
     let nextMovesTotal = 0;  // total sum of next moves
+    let gameData = {};
 
-    const unsubscribeData = gameDataStore.subscribe(data => console.log({data}))
+    const unsubscribeGameData = gameDataStore.subscribe(data => {gameData = data});
 
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
         console.log({newDataArr})
@@ -28,9 +29,10 @@
         }); 
         nextMovesTotal = nextMovesArr.reduce((prev, {move, count, prevCount}) => prev + count, 0);
         console.log({nextMovesArr, aggNextMove, nextMovesTotal})
-    })
-    onDestroy(unsubscribeFen);  // prevent memory leak
-    onDestroy(unsubscribeData);
+    });
+
+    onDestroy(unsubscribeFen);  // prevent memory leak(s)
+    onDestroy(unsubscribeGameData);
 </script>
 
 <div class='container'>
