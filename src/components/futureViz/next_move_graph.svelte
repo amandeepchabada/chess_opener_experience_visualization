@@ -25,8 +25,7 @@
     const xmax = w-bw;
 
     function scaleStroke(t) {
-        const per = t / nextMovesTotal;
-        return per * barHeight;
+        return t * barHeight;
     }
 
     // example of path curves

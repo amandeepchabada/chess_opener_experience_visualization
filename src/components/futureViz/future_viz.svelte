@@ -55,10 +55,11 @@
                 [fen]: count,
             }
             return false;  // remove
-        })
+        });
         nextMovesArr = [...nextMovesArrFilt, otherMoves]; // add other moves
         nextMovesTotal = accCount;
-        console.log('Parsed future move viz data:', {nextMovesArr, aggNextMove, nextMovesTotal});
+        console.log('Parsed next move viz data:', {nextMovesArr, aggNextMove, nextMovesTotal});
+
         nextMovesArrDict = nextMovesArr
             .reduce((p, c) => ({...p, [c.fen]: c}), {});
 
@@ -129,7 +130,6 @@
         accCount = 0;  // count previous sums, useful for translating bars
         const tmpMovesArr2 = Object.entries(aggNextMove2)
             .sort((a,b) => b[1]['count'] - a[1]['count']);   // sort by count
-        console.log({tmpMovesArr2})
         const nextMovesArr2All = tmpMovesArr2.map((s) => {  
             const [fen, {count, prevFens, san}] = s;
             // transform to object from nested arrays
@@ -161,7 +161,7 @@
         // }); // add other moves
         // console.log(nextMovesArr2Filt, otherMoves2)
         // nextMovesArr2 = [...nextMovesArr2Filt, otherMoves2]; // add other moves
-        console.log({nextMovesArr2, nextMovesArr});
+        console.log('Parsed 2 move viz data:', {nextMovesArr2, aggNextMove2, nextMovesTotal2});
     });
 
     // prevent memory leak(s)
@@ -169,7 +169,7 @@
 </script>
 
 <div class='container'>
-    <Chart h={560}
+    <Chart h={700}
         {aggNextMove} {nextMovesArr} {nextMovesTotal} {nextMovesArrDict}
         {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} {nextMovesArrDict2}
     />
@@ -183,6 +183,6 @@
         flex-direction: row;
         flex: 1;
         min-width: 400px;
-        background-color: gray;
+        background-color: lightgray;
     }
 </style>

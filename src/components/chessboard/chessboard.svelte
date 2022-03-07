@@ -14,7 +14,7 @@
 	let copy_fen;
     let fen = 'start';
     let initial_pos = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-    var legal = false;
+    var legal = true;
 
     var game;
     var whiteSquareGrey = '#a9a9a9';
@@ -42,7 +42,7 @@
             onDragStart: onDragStart,
             onMouseoverSquare: onMouseoverSquare,
             onMouseoutSquare: onMouseoutSquare,
-            sparePieces: (legal==true)? false: true,
+            sparePieces: false, //(legal==true)? false: true,
             dropOffBoard: (legal==true)? 'snapback': 'trash', 
         });
         //console.log('Board', board);
@@ -231,7 +231,7 @@
         var tex_to_add;
         if (flag == false) {
             parEle.innerHTML = '';
-            tex_to_add = document.createTextNode('Arrange Board.');
+            tex_to_add = document.createTextNode('Move pieces to update the visualization.');
         }
         else if (flag == true){
             parEle.innerHTML = '';
@@ -248,13 +248,10 @@
 <div class="container">
     {#if board==undefined}
         <div style="width: 400px; height:400px">
-            Reload the page... 
+            There was an error rendering the chessboard, please reload the page... 
         </div>
     {/if}
     <div>
-        <label for="legal">
-            <input type="checkbox" id="legal" name="legal" value="yes" on:click={checkLegal}>  Legal 
-        </label>
         <p id="who-plays"></p>
     </div>
     <div id='board' style="width: 400px"></div>
@@ -272,6 +269,9 @@
         <!-- The button used to copy the text -->
         <button id="get-fen-btn" on:click={getBoardPos}>Get Position</button>
     </div>
+    <label for="legal">
+        <input type="checkbox" id="legal" name="legal" value="yes" on:click={checkLegal}>  Only Legal Moves 
+    </label>
 </div>
 
 
@@ -284,7 +284,7 @@
         justify-content: center;
         width: 500px;
         height: 800px;
-        background-color: yellow;
+        background-color: white;
     }
     .btn-div {
         flex: 0;

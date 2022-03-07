@@ -6,8 +6,8 @@
     export let sizing;
     
     const {w, h, bw} = sizing;
-    const {fen, count, accCount, san} = data;
-    const colors = ['#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1'];
+    $: ({fen, count, accCount, san} = data);
+    const colors = ['#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1','#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1'];
 </script>
 
 <!-- on:mousemove={(evt)=>showTooltip(evt, data)}  -->

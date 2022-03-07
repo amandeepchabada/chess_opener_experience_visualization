@@ -3,7 +3,7 @@
 from functools import reduce
 import json
 import io
-import chess
+import chess.pgn
 
 tree = {}
 openings = set()
@@ -25,7 +25,6 @@ def movesToFen(pgn_string):
     for move in game.mainline_moves():
         board.push(move)
     return board.fen()
-
 
 
 while len(frontier):
@@ -54,9 +53,9 @@ fen_indexed = dict(
     )
 )
 
-with open('eco_indexed.json', 'w') as outfile:
+with open('eco_indexed2.json', 'w') as outfile:
     outfile.write(json.dumps(eco_indexed, indent=4))
-with open('pgn_indexed.json', 'w') as outfile:
+with open('pgn_indexed2.json', 'w') as outfile:
     outfile.write(json.dumps(pgn_indexed, indent=4))
-with open('fen_indexed.json', 'w') as outfile:
+with open('fen_indexed2.json', 'w') as outfile:
     outfile.write(json.dumps(fen_indexed, indent=4))

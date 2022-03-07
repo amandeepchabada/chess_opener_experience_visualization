@@ -20,7 +20,7 @@ export const fenDataStore = derived(  // array of level objects
         console.log('setting new fen', $curr_fen, $gameDataStore)
         const vals = ['0', '1', '2', '3'].map(i => {  // loop over 4 levels
             if ($gameDataStore[i][$curr_fen] == undefined) {
-               window.alert(`New fen not recognized for ${i}: ` + $curr_fen);  // throw user visible error
+                window.alert(`New fen not recognized for ${i}: ` + $curr_fen);  // throw user visible error
                 return $gameDataStore[i][initial_fen];
             }
             return $gameDataStore[i][$curr_fen]  // grab data for level

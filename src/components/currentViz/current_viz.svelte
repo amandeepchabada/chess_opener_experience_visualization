@@ -1,5 +1,12 @@
 <script>
+  	import { onDestroy } from 'svelte';
     import {gameDataStore,initial_fen  } from '../../state';
+
+    let posData = [];  // Use this variable -- sincerely, Brett
+    const unsubscribeFen = gameDataStore.subscribe(new_fen => {
+        posData = new_fen;
+    });
+    onDestroy(unsubscribeFen);  // prevent memory leak
 
     const test_fenData = [
     {"id": 0, "name": "Beginner", "b": 105023, "w": 215498, "t": 42, "nxt": {"e7e6": 1, "g8f6": 1 }},  // beginner
@@ -122,7 +129,7 @@
         flex: 1;
         min-width: 300px;
  
-        background-color: gray;
+        background-color: lightgray;
 
     }
     div.container1 {
@@ -131,7 +138,7 @@
         margin: 35px;
         width: 750px;
         height: 250px;
-        background-color: gray;
+        background-color: lightgray;
        
     }
  

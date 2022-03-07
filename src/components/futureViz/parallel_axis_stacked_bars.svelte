@@ -17,7 +17,7 @@
     let tooltipData;
     function showTooltip(evt, {san, count, fen, accCount, prevFens}) {
         let tooltip = document.getElementById("tooltip");
-        tooltip.innerHTML = `Next move: ${san}, Played ${count} times (${Math.round(count/nextMovesTotal*100)}%)`;
+        tooltip.innerHTML = `${san} was played ${count} times (${Math.round(count/nextMovesTotal*100)}%)`;
         tooltip.style.display = "block";
         tooltip.style.left = evt.pageX + 10 + 'px';
         tooltip.style.top = evt.pageY + 10 + 'px';
@@ -25,7 +25,7 @@
         let curves;
         const xmin = bw;
         const xmax = w-bw;
-        const vc = (acc, cnt, total) => ((acc-cnt)+cnt/2)*h/total + th; // vertical center
+        const vc = (acc, cnt, total) => (acc-cnt/2)*h/total + th; // vertical center
         if (prevFens) {
             const vCentCurr = vc(accCount, count, nextMovesTotal2);
             curves = Object.entries(prevFens).map( ([prevFen, countPrevFen], i) => {
@@ -37,7 +37,7 @@
                     x2: xmax,
                     y1: vCentNext,
                     y2: vCentCurr,
-                    t: (nextMovesTotal-countPrevFen),
+                    t: (countPrevFen)/nextMovesTotal2,
                     c: 'blue',
                 }
             });
@@ -52,18 +52,16 @@
             console.log({nxtFenList, nextMovesArr2, f:nextMovesArrDict2[nxtFenList[0]]})
             // translate into curves
             const vCentCurr = vc(accCount, count, nextMovesTotal);
-            let accCnt = 0;
             curves = nxtFenList.map(nxtFen => {
                 const nxt = nextMovesArrDict2[nxtFen];
+                console.log({nxtFen, nxt})
                 const vCentNext = vc(nxt['accCount'], nxt['count'], nextMovesTotal2);
-                const tmp = accCnt
-                accCnt += nxt['count']*h/nextMovesTotal2;
                 return {
                     x1: xmin,
                     x2: xmax,
-                    y1: vCentCurr + tmp,
+                    y1: vCentCurr,
                     y2: vCentNext,
-                    t: (nxt['count'])*h/nextMovesTotal2,
+                    t: nxt['count']/nextMovesTotal,  // percentage
                     c: 'blue',
                 };
             });
