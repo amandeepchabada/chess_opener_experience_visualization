@@ -10,10 +10,9 @@
     const colors = ['#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1'];
 </script>
 
-
+<!-- on:mousemove={(evt)=>showTooltip(evt, data)}  -->
 <g  id={`bar-${san}`} class='bar'
     on:mouseenter={(evt)=>showTooltip(evt, data)} 
-    on:mousemove={(evt)=>showTooltip(evt, data)} 
     on:mouseleave={hideTooltip} 
 >
     <rect width={bw} height='{count/nextMovesTotal*h}'

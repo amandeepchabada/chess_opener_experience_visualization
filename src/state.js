@@ -29,4 +29,4 @@ export const fenDataStore = derived(  // array of level objects
         return vals
     },
     test_fenData  // initial value
-)
+);

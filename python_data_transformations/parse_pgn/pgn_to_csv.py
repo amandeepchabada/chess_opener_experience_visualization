@@ -61,7 +61,7 @@ def extract_fens(game, x=5):
     fens = []
     board = game.board()
     for i, move in enumerate(game.mainline_moves()):
-        fen = board.fen()
+        fen = board.fen()[:-13]  # remove fen suffix
         fens.append(fen)
         if i > x: break
         board.push(move)
@@ -75,7 +75,7 @@ def extract_fens_moveStrs(game, x=5):
     moveStrs = []
     board = game.board()
     for i, move in enumerate(game.mainline_moves()):
-        fen = board.fen()
+        fen = board.fen()[:-13]  # remove fen suffix
         fens.append(fen)
         moveStrs.append(board.san(move))
         if i > x: break
