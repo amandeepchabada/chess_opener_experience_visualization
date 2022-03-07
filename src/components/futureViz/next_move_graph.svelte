@@ -1,6 +1,7 @@
 <script>
 	import { draw } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+    import {genColor, colorByPieceStore} from '../../state';
 
     export let tooltipData;
     export let nextMovesTotal;
@@ -32,6 +33,11 @@
     // ];
     $: paths = curves;
 
+    function color(path, f) {
+        if ($colorByPieceStore) return genColor({san: path.c.san});
+        return genColor({i: path.c.i});
+    }
+
 </script>
 
 
@@ -41,7 +47,7 @@
         <path  
             transition:draw="{{duration: 300, delay: (paths.length-i_p)*100}}"
             d={`M${path.x1},${path.y1} C0${w},${path.y1} 0,${path.y2} ${path.x2},${path.y2}`} 
-            fill="none" stroke={path.c} stroke-width={path.t}
+            fill="none" stroke={color(path, f)} stroke-width={path.t}
         />
     {/each}
 </g>

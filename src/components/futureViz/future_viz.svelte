@@ -12,6 +12,10 @@
     let nextMovesArrDict2 = {};
     let nextMovesTotal2 = 0;  // total sum of next moves
 
+    function toggleColorByPiece() {
+        // TODO
+    }
+
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
         console.log({newDataArr})
         aggNextMove = newDataArr.reduce((previousValue, currentValue, i_reduce) => {
@@ -36,6 +40,7 @@
             accCount += count;
             return {san, count, accCount, fen}
         });
+        nextMovesTotal = accCount;
 
         // aggregate moves with fewer than 1% of total into "other"
         const otherMoves = {
@@ -45,7 +50,8 @@
             prevFens: {}
         }
         const nextMovesArrFilt = nextMovesArrAll.filter(({fen, count}) => {
-            if (count*100 > nextMovesTotal2) {
+            return true; // EXPERIMENTAL -- do not filter
+            if (count / nextMovesTotal) {
                 return true;  // is ok
             }
             // aggregate this move into other
@@ -57,7 +63,6 @@
             return false;  // remove
         });
         nextMovesArr = [...nextMovesArrFilt] //, otherMoves]; // add other moves
-        nextMovesTotal = accCount;
         console.log('Parsed next move viz data:', {nextMovesArr, aggNextMove, nextMovesTotal});
 
         nextMovesArrDict = nextMovesArr
@@ -180,12 +185,18 @@
             Black's Next
         </text>  
     </svg> -->
-    <h1 align="center" font-size="28" style="margin: 0; padding: 0;">Next Move Distribution</h1>
+    <h1 align="center" font-size="28" style="margin: 0; padding: 0;">Distribution of Next Two Moves</h1>
 
     <Chart h={h} w={w}
         {aggNextMove} {nextMovesArr} {nextMovesTotal} {nextMovesArrDict}
         {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} {nextMovesArrDict2}
     />
+    <div style="display: flex; flex-direction: row;">
+        <label>
+            <input type="checkbox" on:click={() => toggleColorByPiece()}/>
+            Generate colors by piece (default is index)
+        </label>
+    </div>
 </div>
 
 <style>

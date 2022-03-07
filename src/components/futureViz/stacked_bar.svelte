@@ -1,5 +1,5 @@
 <script>
-    import {genColor} from '../../state';
+    import {genColor, colorByPieceStore} from '../../state';
 
     export let i;
     export let data;
@@ -18,7 +18,7 @@
 >
     <rect width={bw} height='{count/nextMovesTotal*h}'
         transform="translate(0,{(accCount-count)/nextMovesTotal*h})"
-        fill={genColor(i)}
+        fill={$colorByPieceStore ? genColor({san}) : genColor({i})}
     />            
     {#if count/nextMovesTotal*h > 20} 
     <!-- if larger than 20 pixels, show label -->

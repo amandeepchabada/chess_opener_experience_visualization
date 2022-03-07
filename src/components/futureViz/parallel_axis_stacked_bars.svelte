@@ -1,7 +1,7 @@
 <script>
     import StackedBar from './stacked_bar.svelte';
     import NextMoveGraph from './next_move_graph.svelte';
-    import { gameDataStore, genColor } from '../../state';
+    import { gameDataStore, genColor, colorByPieceStore } from '../../state';
 
     export let aggNextMove;  // aggreagate next move (sum over levels)
     export let nextMovesArr;  // array of moves and counts: eg {"move": "b2g2", count: 42}
@@ -39,7 +39,7 @@
                     y1: vCentNext,
                     y2: vCentCurr,
                     t: (countPrevFen)/nextMovesTotal2*h,
-                    c: genColor(i),
+                    c: {san, i},
                 }
             });
             // curves.push({
@@ -77,7 +77,7 @@
                     y1: vOffset,
                     y2: vCentNext,
                     t: thickness,  
-                    c: genColor(nxt['i']),
+                    c: {san, i},
                 };
             });
             // other line

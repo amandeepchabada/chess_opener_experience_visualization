@@ -6,7 +6,8 @@
     import CurrentViz from './components/currentViz/current_viz.svelte';
     import FutureViz from './components/futureViz/future_viz.svelte';
 
-	const jsonFilename = 'games_2022_10k_filt10.json'; // TODO trim and import larger files
+	//const jsonFilename = 'games_2022_10k_filt10.json'; // TODO trim and import larger files
+	const jsonFilename = 'games_2022_2M_filt10.json'
 	let fetchJson = fetch(jsonFilename)
 		.then(res => res.json())
 		.then(data => {gameDataStore.set(data)});
