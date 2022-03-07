@@ -2,7 +2,7 @@ import { writable, derived } from "svelte/store";
 
 export const gameDataStore = writable(false); //game_data_1M; // change if more data is needed
 
-export const initial_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+export const initial_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 //export const test_fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1";
 export const curr_fen = writable(initial_fen); // TODO: ensure initial_fen is used at some point in the future
 
