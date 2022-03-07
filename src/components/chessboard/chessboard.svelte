@@ -108,9 +108,9 @@
         //curr_fen.set(copy_fen) ;
         curr_fen.set(copy_fen);
         curr_fen.subscribe(value => {
-            console.log('Value', value);
+            console.log('After Change, Current Fen: ', value);
         });
-        console.log('Curr Fen: ', curr_fen);
+        //console.log('Curr Fen: ', curr_fen);
         
         playerChance(legal);
     }
@@ -177,7 +177,7 @@
     })
     onDestroy(unsubscribeFen);  // prevent memory leak
     */
-   
+
     function copyFenField() {
         var copy_fen_input = document.querySelector("#copy-fen");
         if (copy_fen == undefined) {
