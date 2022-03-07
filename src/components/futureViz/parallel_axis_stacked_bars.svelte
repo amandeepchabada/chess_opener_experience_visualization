@@ -10,6 +10,7 @@
     export let aggNextMove2;  // aggreagate next move (sum over levels)
     export let nextMovesArr2;  // array of moves and counts: eg {"move": "b2g2", count: 42}
     export let nextMovesTotal2;  // total sum of next moves
+    export let nextMovesArrDict2;
     export let h; // height
 
     let tooltipIsShown;
@@ -47,18 +48,26 @@
                 const nxtFensAtLvl = $gameDataStore[level][fen]['nxt'].map(e=>e[0]);
                 return [...acc, ...nxtFensAtLvl];
             }, []);
-            const fullFenDataNxt = [...new Set(fullFenDataNxtDup)];
-            console.log({fullFenDataNxt})
-
-            const fullData = fullFenDataNxt.reduce((prevObj, newNxt)=> {  
-                Object.keys(newItems).forEach( key => {
-                    
-                });
-                return {...prevObj, ...newItems};  // overwrite any duplicate fen objects with new ones
-            }, {});
-            console.log({fullFenDataNxt, fullData})
+            const nxtFenList = [...new Set(fullFenDataNxtDup)];
+            console.log({nxtFenList, nextMovesArr2, f:nextMovesArrDict2[nxtFenList[0]]})
+            // translate into curves
+            const vCentCurr = vc(accCount, count, nextMovesTotal);
+            let accCnt = 0;
+            curves = nxtFenList.map(nxtFen => {
+                const nxt = nextMovesArrDict2[nxtFen];
+                const vCentNext = vc(nxt['accCount'], nxt['count'], nextMovesTotal2);
+                const tmp = accCnt
+                accCnt += nxt['count']*h/nextMovesTotal2;
+                return {
+                    x1: xmin,
+                    x2: xmax,
+                    y1: vCentCurr + tmp,
+                    y2: vCentNext,
+                    t: (nxt['count'])*h/nextMovesTotal2,
+                    c: 'blue',
+                };
+            });
         }
-
         tooltipData = {san, count, fen, accCount, prevFens, curves};
         console.log({tooltipData})
         tooltipIsShown = true;

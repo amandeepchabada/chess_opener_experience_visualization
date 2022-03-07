@@ -9,6 +9,7 @@
     let nextMovesTotal = 0;  // total sum of next moves
     let aggNextMove2 = {}  // aggreagate next move (sum over levels)
     let nextMovesArr2 = [];  // array of moves and counts: eg {"move": "b2g2", count: 42}
+    let nextMovesArrDict2 = {};
     let nextMovesTotal2 = 0;  // total sum of next moves
 
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
@@ -90,7 +91,7 @@
                 });
                 return {...previousValue, ...newValue};  // overwrite previous values with new sums
             },{}); 
-        }).reduce((prevObj, newItems)=> {  
+        }).reduce((prevObj, newItems)=> {
             // combine next fens for each move, combine duplicates
             /* convert from
                    [{[fen]: {count, san, fenPrev}, ...}, // data from move 1
@@ -101,7 +102,7 @@
             */
             // update count and prev fen data for each object in newItems 
             // looking at stuff in prevObj
-            //console.log({prevObj, newItems})
+            // console.log({prevObj, newItems})
             Object.keys(newItems).forEach( key => {
                 const newFenCnt = newItems[key]['count'];
                 const newFen = newItems[key]['fenPrev'];
@@ -137,6 +138,8 @@
         });
         nextMovesTotal2 = accCount;
         nextMovesArr2 = nextMovesArr2All;
+        nextMovesArrDict2 = nextMovesArr2
+            .reduce((p, c) => ({...p, [c.fen]: c}), {});
         // // filter moves with fewer than 1% of total
         // const otherMoves2 = {
         //     san: 'Other',
@@ -168,7 +171,7 @@
 <div class='container'>
     <Chart h={560}
         {aggNextMove} {nextMovesArr} {nextMovesTotal} {nextMovesArrDict}
-        {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} 
+        {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} {nextMovesArrDict2}
     />
 </div>
 

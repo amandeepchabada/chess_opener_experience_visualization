@@ -44,7 +44,7 @@
     {#each paths as path}
         <!-- bezier curve to make flow-diagram-like info -->
         <path  
-            transition:draw="{{duration: 1500, easing: quintOut}}"
+            transition:draw="{{duration: 300}}"
             d={`M${path.x1},${path.y1} C0${w},${path.y1} 0,${path.y2} ${path.x2},${path.y2}`} 
             fill="none" stroke={path.c} stroke-width={scaleStroke(path.t)}
         />
