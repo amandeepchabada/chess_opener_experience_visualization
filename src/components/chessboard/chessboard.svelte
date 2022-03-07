@@ -5,7 +5,7 @@
 </svelte:head>
 
 <script>
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
     import { curr_fen } from '../../state';
 
     import { Chess } from '../../../node_modules/chess.js/chess';
@@ -284,7 +284,7 @@
         justify-content: center;
         width: 500px;
         height: 800px;
-        background-color: white;
+        background-color: lightgray;
     }
     .btn-div {
         flex: 0;

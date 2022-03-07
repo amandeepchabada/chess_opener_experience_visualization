@@ -183,6 +183,6 @@
         flex-direction: row;
         flex: 1;
         min-width: 400px;
-        background-color: lightgray;
+        background-color: gray;
     }
 </style>

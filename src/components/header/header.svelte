@@ -20,6 +20,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: flex-end;
-        background-color: gray;
+        background-color: black;
+        color: whitesmoke;
     }
 </style>

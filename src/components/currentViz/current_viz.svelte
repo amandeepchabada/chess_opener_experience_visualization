@@ -9,13 +9,11 @@
     onDestroy(unsubscribeFen);  // prevent memory leak
 
     const test_fenData = [
-    {"id": 0, "name": "Beginner", "b": 105023, "w": 215498, "t": 42, "nxt": {"e7e6": 1, "g8f6": 1 }},  // beginner
-    {"id": 1, "name": "Intermediate", "b": 15, "w": 115498, "t": 9263, "nxt": {"e7e6": 1, "g8f6": 1, "f7f5": 9, "b8a6": 1, "d8e7": 2 }}, // intermediate
-    {"id": 2, "name": "Advanced", "b": 105023, "w": 584984, "t": 66, "nxt": {"e7e6": 1, "g8f6": 1 }},  // advanced
-    {"id": 3, "name": "Pro", "b": 0, "w": 315498, "t": 23263, "nxt": {"e7e6": 1, "g8f6": 1 }},  // pro
-
-
-];
+        {"id": 0, "name": "Beginner", "b": 105023, "w": 215498, "t": 42, "nxt": {"e7e6": 1, "g8f6": 1 }},  // beginner
+        {"id": 1, "name": "Intermediate", "b": 15, "w": 115498, "t": 9263, "nxt": {"e7e6": 1, "g8f6": 1, "f7f5": 9, "b8a6": 1, "d8e7": 2 }}, // intermediate
+        {"id": 2, "name": "Advanced", "b": 105023, "w": 584984, "t": 66, "nxt": {"e7e6": 1, "g8f6": 1 }},  // advanced
+        {"id": 3, "name": "Pro", "b": 0, "w": 315498, "t": 23263, "nxt": {"e7e6": 1, "g8f6": 1 }},  // pro
+    ];
 
     console.log("test",test_fenData)
     let Total =[];
@@ -129,7 +127,7 @@
         flex: 1;
         min-width: 300px;
  
-        background-color: lightgray;
+        background-color: gray;
 
     }
     div.container1 {
@@ -138,7 +136,7 @@
         margin: 35px;
         width: 750px;
         height: 250px;
-        background-color: lightgray;
+        background-color: gray;
        
     }
  
