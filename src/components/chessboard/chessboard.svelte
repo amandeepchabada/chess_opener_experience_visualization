@@ -195,6 +195,7 @@
          /* Select the text field */
         copy_fen_input.select();
         copy_fen_input.setSelectionRange(0, 99999); /* For mobile devices */
+        
 
         /* Copy the text inside the text field */
         navigator.clipboard.writeText(copy_fen_input.value);

@@ -6,14 +6,21 @@
     export let nextMovesTotal;
     export let aggNextMove;
     export let nextMovesArr;
+    export let nextMovesTotal2;
+    export let aggNextMove2;
+    export let nextMovesArr2;
     export let sizing;
 
-    const {san, count, fen, accCount} = tooltipData;
+    $: ({san, count, fen, accCount, curves} = tooltipData);
     const {w, h, bw, th} = sizing;
     const colors = ['#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1'];
 
-    const vertical_center = ((accCount-count)+count/2)*h/nextMovesTotal + th;
-    const barHeight = count/nextMovesTotal*h;
+    function calcVertCent(acc, cnt, total) {
+        // calculate vertical center
+        return ((acc-cnt)+cnt/2)*h/total + th
+    }
+    $: vc_selected = calcVertCent(accCount, count, nextMovesTotal);
+    $: barHeight = count/nextMovesTotal*h;
     const xmin = bw;
     const xmax = w-bw;
 
@@ -21,11 +28,15 @@
         const per = t / nextMovesTotal;
         return per * barHeight;
     }
-    const paths = [ 
-        {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center, t: count, c:'blue'},
-        {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center/2, t: (nextMovesTotal-count)*2/3, c:'yellow'},
-        {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center*2, t: (nextMovesTotal-count)*1/3, c:'green'},
-    ];
+
+    // example of path curves
+    // [ 
+    //     {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center, t: count, c:'blue'},
+    //     {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center/2, t: (nextMovesTotal-count)*2/3, c:'yellow'},
+    //     {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center*2, t: (nextMovesTotal-count)*1/3, c:'green'},
+    // ];
+    $: paths = curves;
+
 </script>
 
 
@@ -38,10 +49,6 @@
             fill="none" stroke={path.c} stroke-width={scaleStroke(path.t)}
         />
     {/each}
-
-
-    <!-- <path d={`M${xmin},${vertical_center} ${xmax},${vertical_center+70}`} 
-        fill="none" stroke="black" stroke-width={scaleStroke()}/> -->
 </g>
 
 
