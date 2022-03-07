@@ -22,7 +22,7 @@
 	
     onMount(() => {
         console.log('Mounted');
-        console.log('Curr_fen', curr_fen);
+        console.log('Curr_fen', curr_fen, fen);
         copyFenField();
         playerChance(false);
         //game = new Chess();
@@ -77,6 +77,24 @@
             console.log('Move: ', move);
             // illegal move
             if (move === null) {return 'snapback';}
+
+            if (move.san == 'O-O') {
+                if (move.color == 'w') {
+                    board.move('h1-f1');
+                }
+                else if (move.color == 'b') {
+                    board.move('h8-f8');
+                }
+            }
+
+            if (move.san == 'O-O-O') {
+                if (move.color == 'w') {
+                    board.move('a1-d1');
+                }
+                else if (move.color == 'b') {
+                    board.move('a8-d8');
+                }
+            }
         }
         
         
@@ -87,11 +105,18 @@
         copy_fen = Chessboard.objToFen(newPos);
         copyFenField();
         console.log('Turn to Play: ', game.turn());
+        //curr_fen.set(copy_fen) ;
+        curr_fen.set(copy_fen);
+        curr_fen.subscribe(value => {
+            console.log('Value', value);
+        });
+        console.log('Curr Fen: ', curr_fen);
+        
         playerChance(legal);
     }
 
     function onDragStart (source, piece) {
-        console.log('In onDragStart()');
+        //console.log('In onDragStart()');
     }
 
     function onMouseoverSquare (square, piece) {
@@ -146,11 +171,13 @@
 
     }
 	
+    /*
     const unsubscribeFen = curr_fen.subscribe(new_fen => {
         fen = new_fen;
     })
     onDestroy(unsubscribeFen);  // prevent memory leak
-
+    */
+   
     function copyFenField() {
         var copy_fen_input = document.querySelector("#copy-fen");
         if (copy_fen == undefined) {
