@@ -262,12 +262,12 @@
     <div id="fen-copy-div">
         <input type="text" value="" id="copy-fen">
         <!-- The button used to copy the text -->
-        <button on:click={copyFen}>Copy</button>
+        <button on:click={copyFen} style="width: 160px;">Copy Position</button>
     </div>
     <div id="fen-get-div">
         <input type="text" value="" id="get-fen">
         <!-- The button used to copy the text -->
-        <button id="get-fen-btn" on:click={getBoardPos}>Get Position</button>
+        <button id="get-fen-btn" on:click={getBoardPos}>Set Position</button>
     </div>
     <label for="legal">
         <input type="checkbox" id="legal" name="legal" value="yes" on:click={checkLegal}>  Only Legal Moves 
@@ -300,7 +300,6 @@
         margin-left: 20px;
         margin-right: 20px;
         margin-top: 10px;
-
     }
     #fen-copy-div {
         display: flex;

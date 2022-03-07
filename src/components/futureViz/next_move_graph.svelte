@@ -24,10 +24,6 @@
     const xmin = bw;
     const xmax = w-bw;
 
-    function scaleStroke(t) {
-        return t * barHeight;
-    }
-
     // example of path curves
     // [ 
     //     {x1: xmin, y1: vertical_center, x2:xmax, y2: vertical_center, t: count, c:'blue'},
@@ -40,12 +36,12 @@
 
 
 <g  id={`bar-${san}`} class='bar'>
-    {#each paths as path}
+    {#each paths.reverse() as path, i_p}
         <!-- bezier curve to make flow-diagram-like info -->
         <path  
-            transition:draw="{{duration: 300}}"
+            transition:draw="{{duration: 300, delay: (paths.length-i_p)*100}}"
             d={`M${path.x1},${path.y1} C0${w},${path.y1} 0,${path.y2} ${path.x2},${path.y2}`} 
-            fill="none" stroke={path.c} stroke-width={scaleStroke(path.t)}
+            fill="none" stroke={path.c} stroke-width={path.t}
         />
     {/each}
 </g>

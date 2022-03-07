@@ -1,4 +1,6 @@
 <script>
+    import {genColor} from '../../state';
+
     export let i;
     export let data;
     export let hideTooltip, showTooltip;
@@ -7,7 +9,6 @@
     
     const {w, h, bw} = sizing;
     $: ({fen, count, accCount, san} = data);
-    const colors = ['#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1','#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1', '#3d5599', '#ffe', '#f44', '#f1e', '#ee1'];
 </script>
 
 <!-- on:mousemove={(evt)=>showTooltip(evt, data)}  -->
@@ -17,11 +18,11 @@
 >
     <rect width={bw} height='{count/nextMovesTotal*h}'
         transform="translate(0,{(accCount-count)/nextMovesTotal*h})"
-        fill={colors[i]}
+        fill={genColor(i)}
     />            
     {#if count/nextMovesTotal*h > 20} 
     <!-- if larger than 20 pixels, show label -->
-        <text transform="translate(30,{((accCount-count)+count/2)*h/nextMovesTotal+5})">
+        <text transform="translate(18,{((accCount-count)+count/2)*h/nextMovesTotal+5})">
             {san}
         </text>
     {/if}

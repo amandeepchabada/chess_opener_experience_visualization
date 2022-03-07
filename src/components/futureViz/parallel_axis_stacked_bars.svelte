@@ -1,7 +1,7 @@
 <script>
     import StackedBar from './stacked_bar.svelte';
     import NextMoveGraph from './next_move_graph.svelte';
-    import { gameDataStore } from '../../state';
+    import { gameDataStore, genColor } from '../../state';
 
     export let aggNextMove;  // aggreagate next move (sum over levels)
     export let nextMovesArr;  // array of moves and counts: eg {"move": "b2g2", count: 42}
@@ -12,6 +12,7 @@
     export let nextMovesTotal2;  // total sum of next moves
     export let nextMovesArrDict2;
     export let h; // height
+    export let w; // width
 
     let tooltipIsShown;
     let tooltipData;
@@ -28,8 +29,8 @@
         const vc = (acc, cnt, total) => (acc-cnt/2)*h/total + th; // vertical center
         if (prevFens) {
             const vCentCurr = vc(accCount, count, nextMovesTotal2);
-            curves = Object.entries(prevFens).map( ([prevFen, countPrevFen], i) => {
-                const {accCount: accCntNxt, count: cntNxt, san} = nextMovesArrDict[prevFen]
+            curves = Object.entries(prevFens).map( ([prevFen, countPrevFen]) => {
+                const {accCount: accCntNxt, count: cntNxt, san, i} = nextMovesArrDict[prevFen]
                 console.log({prevFen, aggNextMove});
                 const vCentNext = vc(accCntNxt, cntNxt, nextMovesTotal); // vertical center of previous move
                 return {
@@ -37,10 +38,18 @@
                     x2: xmax,
                     y1: vCentNext,
                     y2: vCentCurr,
-                    t: (countPrevFen)/nextMovesTotal2,
-                    c: 'blue',
+                    t: (countPrevFen)/nextMovesTotal2*h,
+                    c: genColor(i),
                 }
             });
+            // curves.push({
+            //     x1: xmin,
+            //     x2: xmax/2,
+            //     y1: vOffset,
+            //     y2: h-thickness/2,
+            //     t: thickness,  
+            //     c: 'gray',
+            // });
         }
         else {
             // need list of next fens
@@ -49,21 +58,39 @@
                 return [...acc, ...nxtFensAtLvl];
             }, []);
             const nxtFenList = [...new Set(fullFenDataNxtDup)];
-            console.log({nxtFenList, nextMovesArr2, f:nextMovesArrDict2[nxtFenList[0]]})
+            //console.log({nxtFenList, nextMovesArr2, f:nextMovesArrDict2[nxtFenList[0]]})
             // translate into curves
             const vCentCurr = vc(accCount, count, nextMovesTotal);
-            curves = nxtFenList.map(nxtFen => {
-                const nxt = nextMovesArrDict2[nxtFen];
-                console.log({nxtFen, nxt})
+            let vOffsetAcc = accCount - count;  // vertical offset accumulator (avoid overlap in start)
+            let acc = 0;
+            curves = nxtFenList.map((nxtFen, i) => {
+                const nxt = nextMovesArrDict2[nxtFen]; 
+                //console.log({nxtFen, nxt})
+                const thickness = nxt['count']/nextMovesTotal*h;
                 const vCentNext = vc(nxt['accCount'], nxt['count'], nextMovesTotal2);
+                const vOffset = (vOffsetAcc)*h/nextMovesTotal + thickness/2;
+                vOffsetAcc += nxt['count'];
+                acc += nxt['count'];
                 return {
                     x1: xmin,
                     x2: xmax,
-                    y1: vCentCurr,
+                    y1: vOffset,
                     y2: vCentNext,
-                    t: nxt['count']/nextMovesTotal,  // percentage
-                    c: 'blue',
+                    t: thickness,  
+                    c: genColor(nxt['i']),
                 };
+            });
+            // other line
+            const thickness = (count - acc)/nextMovesTotal*h;
+            const y1 = (accCount)*h/nextMovesTotal - thickness/2;
+            console.log('f',{y1, thickness});
+            curves.push({
+                x1: xmin,
+                x2: xmax/2,
+                y1: y1,
+                y2: h+20-thickness/2,
+                t: thickness,  
+                c: 'gray',
             });
         }
         tooltipData = {san, count, fen, accCount, prevFens, curves};
@@ -78,20 +105,17 @@
     }
 
     const sizing = {
-        w: 350, 
+        w: w, 
         bw: 50,
         h: h,
-        th: 20,  // title height
+        th: 0,  // title height
     }
-    const {w, th, bw} = sizing;  // overall width
+    const {th, bw} = sizing;  // overall width
 
 </script>
 
-<svg width={w} height={h} >
+<svg width={w} height={h+20} >
     <g class='bars-1'>
-        <text x="0" y="16" class="large">
-            White's Moves
-        </text>
         <g transform="translate(0,{th})">
             {#each nextMovesArr as data, i}
                 <StackedBar {data} {i} {sizing} {nextMovesTotal} 
@@ -100,9 +124,6 @@
         </g>
     </g>
     <g class='bars-2' transform="translate({w-bw},0)">
-        <text x="-68" y="16" class="large">
-            Black's Responses
-        </text>        
         <g transform="translate(0,{th})">
             {#each nextMovesArr2 as data, i}
                 <StackedBar {data} {i} {sizing} 
@@ -117,6 +138,7 @@
             {aggNextMove} {nextMovesArr} {nextMovesTotal}
             {aggNextMove2} {nextMovesArr2} {nextMovesTotal2}
         />
+        <text x={w/2-20} y={h+18}>Other Move(s)</text>
     {/if}
 </svg>
 {#if true}

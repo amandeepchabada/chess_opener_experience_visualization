@@ -13,6 +13,12 @@ const test_fenData = [
     {"b": 0, "w": 115498, "t": 9263, "nxt": {"e7e6": 1, "g8f6": 1 }},  // pro
 ]
 
+
+export function genColor(i) {
+    const colors = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f']
+    return colors[i % colors.length]
+}
+
 export const fenDataStore = derived(  // array of level objects
     [curr_fen, gameDataStore], 
     ([$curr_fen, $gameDataStore]) => {

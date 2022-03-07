@@ -56,12 +56,12 @@
             }
             return false;  // remove
         });
-        nextMovesArr = [...nextMovesArrFilt, otherMoves]; // add other moves
+        nextMovesArr = [...nextMovesArrFilt] //, otherMoves]; // add other moves
         nextMovesTotal = accCount;
         console.log('Parsed next move viz data:', {nextMovesArr, aggNextMove, nextMovesTotal});
 
         nextMovesArrDict = nextMovesArr
-            .reduce((p, c) => ({...p, [c.fen]: c}), {});
+            .reduce((p, c, i) => ({...p, [c.fen]: {...c, i}}), {});
 
         // get data for 2 moves in the future 
         const nextMovesDataArr = nextMovesArr.map(({fen:fenPrev},i) => {
@@ -139,7 +139,7 @@
         nextMovesTotal2 = accCount;
         nextMovesArr2 = nextMovesArr2All;
         nextMovesArrDict2 = nextMovesArr2
-            .reduce((p, c) => ({...p, [c.fen]: c}), {});
+            .reduce((p, c, i) => ({...p, [c.fen]: {...c, i}}), {});
         // // filter moves with fewer than 1% of total
         // const otherMoves2 = {
         //     san: 'Other',
@@ -166,10 +166,23 @@
 
     // prevent memory leak(s)
     onDestroy(unsubscribeFen);  
+
+    const w = 380;
+    const h = 720;
 </script>
 
 <div class='container'>
-    <Chart h={700}
+    <!-- <svg width={w} height={20}>
+        <text x="0" y="16" class="large-text">
+            White's Next
+        </text>
+        <text x="260" y="16" class="large-text">
+            Black's Next
+        </text>  
+    </svg> -->
+    <h1 align="center" font-size="28" style="margin: 0; padding: 0;">Next Move Distribution</h1>
+
+    <Chart h={h} w={w}
         {aggNextMove} {nextMovesArr} {nextMovesTotal} {nextMovesArrDict}
         {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} {nextMovesArrDict2}
     />
@@ -180,9 +193,13 @@
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-        flex-direction: row;
+        flex-direction: column;
         flex: 1;
         min-width: 400px;
-        background-color: gray;
+        background-color: lightgray;
+    }
+
+    .large-text {
+        font-size: large;
     }
 </style>
