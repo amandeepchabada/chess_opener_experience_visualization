@@ -1,31 +1,34 @@
 <script>
   	import { onDestroy } from 'svelte';
-    import {gameDataStore, initial_fen  } from '../../state';
+    import {fenDataStore,initial_fen  } from '../../state';
+  	import Hoverable from './Hoverable.svelte';
+    import { fade, fly } from 'svelte/transition';
 
+    let name = ["Beginner", "Intermediate", "Advanced","Pro"];
     let posData = [];  // Use this variable -- sincerely, Brett
-    const unsubscribeFen = gameDataStore.subscribe(new_fen => {
-        posData = new_fen;
+    const unsubscribeFen = fenDataStore.subscribe(new_fen => {
+        
+        let gameTotal= [  161763, 700261, 444771, 88547]
+  
+        posData = new_fen.map((level,i) => {
+         
+          let total = level.b +level.w+ level.t;
+          let popularity = Math.round(total / gameTotal[i] *100);
+          // console.log({total,i})
+          return {bG: level.b, b: Math.round(level.b/total*100) , 
+                  wG: level.w, w: Math.round(level.w/total*100) , 
+                  tG:level.t , t: Math.round(level.t/total*100),
+                  total: total, popularity : popularity,
+                  gameTotal :gameTotal};
+        });
+
+      
     });
     onDestroy(unsubscribeFen);  // prevent memory leak
 
-    const test_fenData = [
-        {"id": 0, "name": "Beginner", "b": 105023, "w": 215498, "t": 42, "nxt": {"e7e6": 1, "g8f6": 1 }},  // beginner
-        {"id": 1, "name": "Intermediate", "b": 15, "w": 115498, "t": 9263, "nxt": {"e7e6": 1, "g8f6": 1, "f7f5": 9, "b8a6": 1, "d8e7": 2 }}, // intermediate
-        {"id": 2, "name": "Advanced", "b": 105023, "w": 584984, "t": 66, "nxt": {"e7e6": 1, "g8f6": 1 }},  // advanced
-        {"id": 3, "name": "Pro", "b": 0, "w": 315498, "t": 23263, "nxt": {"e7e6": 1, "g8f6": 1 }},  // pro
-    ];
-
-    console.log("test",test_fenData)
-    let Total =[];
-
-
-    for( let i =0; i< test_fenData.length; i++){
-        Total.push({"total" : [test_fenData[i].b +test_fenData[i].w+ test_fenData[i].t]});
-        
-    }
-   
-
-    console.log("Total",Total)
+ 
+    console.table({posData})
+  
 </script>
 
 <div align="center" class='container'>
@@ -33,92 +36,82 @@
         Game Results by Experience Level 
     </h1>
   
-  
-  <div class='container1' >
-      
-    <!-- {#each test_fenData as t,i}
-    <div class="row">
-        
-        <div class="label">
-          <p text-align= "right" >{t.name}</p> 
-        </div>
-        <div class="bar-container">
-          <div class="bar val-a" style="flex-basis: 20%">50%</div>
-          <div class="bar val-b" style="flex-basis: 30%">30%</div>
-          <div class="bar val-c" style="flex-basis: 50%">50%</div>
-        </div>
-      </div>
-      {/each} -->
-
-      <div class="row">
-        
-        <div class="label">
-          <p text-align= "right" >Beginner</p> 
-        </div>
-        <div class="bar-container">
-          <div class="bar val-a" style="flex-basis: 20%">20%</div>
-          <div class="bar val-b" style="flex-basis: 30%">30%</div>
-          <div class="bar val-c" style="flex-basis: 50%">50%</div>
-        </div>
-      </div>
-
-      <div class="row">
-        
-        <div class="label">
-          <p text-align= "right" >Intermediate</p> 
-        </div>
-        <div class="bar-container">
-          <div class="bar val-a" style="flex-basis: 50%">50%</div>
-          <div class="bar val-b" style="flex-basis: 10%">10%</div>
-          <div class="bar val-c" style="flex-basis: 40%">40%</div>
-        </div>
-      </div>
-
-      <div class="row">
-        
-        <div class="label">
-          <p text-align= "right" >Advanced</p> 
-        </div>
-        <div class="bar-container">
-          <div class="bar val-a" style="flex-basis: 10%">10%</div>
-          <div class="bar val-b" style="flex-basis: 60%">60%</div>
-          <div class="bar val-c" style="flex-basis: 30%">30%</div>
-        </div>
-      </div>
-
-
-      <div class="row">
-        
-        <div class="label">
-          <p text-align= "right" >Pro</p> 
-        </div>
-        <div class="bar-container">
-          <div class="bar val-a" style="flex-basis: 5%">5%</div>
-          <div class="bar val-b" style="flex-basis: 15%">15%</div>
-          <div class="bar val-c" style="flex-basis: 80%">80%</div>
-        </div>
-      </div>
-
-    
-    </div>
    
+  <div class='container1' >
+    <Hoverable let:hovering={active}>
+    {#each posData as t,i}
+        <div class="row">
+          
+          <div class="label">
+            <p text-align= "right" >{name[i]}</p> 
+          </div>
+          <div class="bar-container">
+            {#if t.b !=0  }
+            {#if active}
+            <div  class="bar val-a1" style="flex-basis: {t.b}%">{t.bG}</div>
+            {:else}
+            <div class="bar val-a" style="flex-basis: {t.b}%">{t.b}%</div>
+            {/if}
+            {/if}
+            {#if t.t !=0  }
+            {#if active}
+            <div  class="bar val-b1" style="flex-basis: {t.t}%">{t.tG}</div>
+            {:else}
+            <div class="bar val-b" style="flex-basis: {t.t}%">{t.t}%</div>
+            {/if}
+            {/if}
+            {#if t.w !=0  }
+            {#if active}
+            <div class="bar val-c1" style="flex-basis: {t.w}%">{t.wG}</div>
+            {:else}
+            <div class="bar val-c" style="flex-basis: {t.w}%">{t.w}%</div>
+            {/if}
+            {/if}
+          </div>
+        </div>
+    {/each}
+  </Hoverable>
+    </div>
+ 
     <h1 align="center" font-size= "28"> Position Popularity by Experience Level </h1>
-    <svg height= "200px" transform= "translate(20, 0)" >
+    <!-- <svg height= "200px" transform= "translate(20, 0)" >
       <g transform= "translate(0,   25 )"> 
       
         <g transform= "translate(0,   25 )"> 
-        {#each test_fenData as t,  i}
+        {#each posData as t,  i}
             <g transform= {`translate(100, ${ i * 35 })`}>
-                <rect  width="{t.w/1000}" height = "30" fill = "darkgray" />
-                <text  text-anchor="end" dominant-baseline= "middle" x="-5" y="15">{t.name}</text>
-                <text  fill= black dominant-baseline= "middle" x={t.w/1000- 75} y="15">{t.w/10000} %</text>
+                <rect  width="{t.popularity}" height = "30" fill = "darkgray" />
+                <text  text-anchor="end" dominant-baseline= "middle" x="-5" y="15">{name[i]}</text>
+                <text  fill= black dominant-baseline= "middle" x={t.popularity- 75} y="15">{t.popularity} %</text>
 
             </g>  
         
         {/each}
     </g>  
     </g> 
-    </svg>
+    </svg> -->
+
+    <div class='container1' >
+      <Hoverable let:hovering={active}>
+      {#each posData as t,i}
+          <div class="row">
+            
+            <div class="label">
+              <p text-align= "right" >{name[i]}</p> 
+            </div>
+            <div class="bar-container">
+              {#if active}
+              <div class="bar val-{[i]}" style="flex-basis: {t.popularity}%">{t.total} </div>
+              {:else}
+              <div class="bar val-{[i]}" style="flex-basis: {t.popularity}%">{t.popularity}%</div>
+           {/if} 
+           </div>
+          </div>
+      {/each}
+    </Hoverable>
+    
+      </div>
+
 
 </div>
 
@@ -177,4 +170,11 @@
     .val-a { background: black; color: white}
     .val-b { background: lightgray ; color: black}
     .val-c { background: white ; color: black}
+    .val-a1 { background: rgba(0, 0, 0, 0.945); color: rgb(255, 187, 187)}
+    .val-b1 { background: rgba(211, 211, 211, 0.932) ; color: rgb(167, 0, 0)}
+    .val-c1 { background: rgba(255, 255, 255, 0.959) ; color: rgb(167, 0, 0)}
+    .val-0 { background:  #ffff99 ; color: black }
+    .val-1 { background:  #fdc086; color: black }
+    .val-2 { background: #beaed4; color:white }
+    .val-3 { background:  #7fc97f; color:white }
 </style>
