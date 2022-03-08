@@ -170,9 +170,9 @@
     .val-a { background: black; color: white}
     .val-b { background: lightgray ; color: black}
     .val-c { background: white ; color: black}
-    .val-a1 { background: rgba(0, 0, 0, 0.945); color: rgb(255, 187, 187)}
-    .val-b1 { background: rgba(211, 211, 211, 0.932) ; color: rgb(167, 0, 0)}
-    .val-c1 { background: rgba(255, 255, 255, 0.959) ; color: rgb(167, 0, 0)}
+    .val-a1 { background: rgb(0, 0, 0); color: rgb(255, 187, 187)}
+    .val-b1 { background: rgb(211, 211, 211) ; color: rgb(167, 0, 0)}
+    .val-c1 { background: rgb(255, 255, 255) ; color: rgb(167, 0, 0)}
     .val-0 { background:  #ffff99 ; color: black }
     .val-1 { background:  #fdc086; color: black }
     .val-2 { background: #beaed4; color:white }
