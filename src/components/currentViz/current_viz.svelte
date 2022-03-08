@@ -1,9 +1,9 @@
 <script>
   	import { onDestroy } from 'svelte';
     import {fenDataStore,initial_fen  } from '../../state';
-  	import Hoverable from './Hoverable.svelte';
+  	import Hoverable from './Tooltip.svelte';
     import { fade, fly } from 'svelte/transition';
-
+    import Tooltip from './Tooltip.svelte';
     let name = ["Beginner", "Intermediate", "Advanced","Pro"];
     let posData = [];  // Use this variable -- sincerely, Brett
     const unsubscribeFen = fenDataStore.subscribe(new_fen => {
@@ -38,39 +38,37 @@
   
    
   <div class='container1' >
-    <Hoverable let:hovering={active}>
+   
     {#each posData as t,i}
+
         <div class="row">
-          
+
+
           <div class="label">
             <p text-align= "right" >{name[i]}</p> 
           </div>
           <div class="bar-container">
             {#if t.b !=0  }
-            {#if active}
-            <div  class="bar val-a1" style="flex-basis: {t.b}%">{t.bG}</div>
-            {:else}
-            <div class="bar val-a" style="flex-basis: {t.b}%">{t.b}%</div>
+            <Tooltip title="{t.bG}"> 
+            <div class="bar val-a" style="flex-basis: {t.b}%"> {t.b}% </div>
+           </Tooltip>
             {/if}
-            {/if}
+        
             {#if t.t !=0  }
-            {#if active}
-            <div  class="bar val-b1" style="flex-basis: {t.t}%">{t.tG}</div>
-            {:else}
+            <Tooltip title="{t.tG}"> 
             <div class="bar val-b" style="flex-basis: {t.t}%">{t.t}%</div>
-            {/if}
+          </Tooltip>
             {/if}
             {#if t.w !=0  }
-            {#if active}
-            <div class="bar val-c1" style="flex-basis: {t.w}%">{t.wG}</div>
-            {:else}
+            <Tooltip title="{t.wG}"> 
             <div class="bar val-c" style="flex-basis: {t.w}%">{t.w}%</div>
-            {/if}
+          </Tooltip>
             {/if}
           </div>
+  
         </div>
     {/each}
-  </Hoverable>
+ 
     </div>
  
     <h1 align="center" font-size= "28"> Position Popularity by Experience Level </h1>
@@ -92,23 +90,25 @@
     </svg> -->
 
     <div class='container1' >
-      <Hoverable let:hovering={active}>
+ 
       {#each posData as t,i}
+      <Tooltip title="{t.total}"> 
           <div class="row">
             
             <div class="label">
               <p text-align= "right" >{name[i]}</p> 
             </div>
+         
             <div class="bar-container">
-              {#if active}
-              <div class="bar val-{[i]}" style="flex-basis: {t.popularity}%">{t.total} </div>
-              {:else}
+            
               <div class="bar val-{[i]}" style="flex-basis: {t.popularity}%">{t.popularity}%</div>
-           {/if} 
+            
            </div>
+         
           </div>
+           </Tooltip>
       {/each}
-    </Hoverable>
+
     
       </div>
 
@@ -170,9 +170,9 @@
     .val-a { background: black; color: white}
     .val-b { background: lightgray ; color: black}
     .val-c { background: white ; color: black}
-    .val-a1 { background: rgb(0, 0, 0); color: rgb(255, 187, 187)}
-    .val-b1 { background: rgb(211, 211, 211) ; color: rgb(167, 0, 0)}
-    .val-c1 { background: rgb(255, 255, 255) ; color: rgb(167, 0, 0)}
+    .val-a1 { background: rgba(0, 0, 0, 0.945); color: rgb(255, 187, 187)}
+    .val-b1 { background: rgba(211, 211, 211, 0.932) ; color: rgb(167, 0, 0)}
+    .val-c1 { background: rgba(255, 255, 255, 0.959) ; color: rgb(167, 0, 0)}
     .val-0 { background:  #ffff99 ; color: black }
     .val-1 { background:  #fdc086; color: black }
     .val-2 { background: #beaed4; color:white }
