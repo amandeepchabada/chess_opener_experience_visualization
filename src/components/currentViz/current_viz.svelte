@@ -1,6 +1,6 @@
 <script>
   	import { onDestroy } from 'svelte';
-    import {gameDataStore,initial_fen  } from '../../state';
+    import {gameDataStore, initial_fen  } from '../../state';
 
     let posData = [];  // Use this variable -- sincerely, Brett
     const unsubscribeFen = gameDataStore.subscribe(new_fen => {
