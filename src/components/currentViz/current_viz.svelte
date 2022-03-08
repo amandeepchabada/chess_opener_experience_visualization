@@ -9,13 +9,13 @@
     const unsubscribeFen = fenDataStore.subscribe(new_fen => {
         
         let gameTotal= [  161763, 700261, 444771, 88547]
-  
+    
         posData = new_fen.map((level,i) => {
-         
+           let g = [level.b,level.t,level.w];
           let total = level.b +level.w+ level.t;
           let popularity = Math.round(total / gameTotal[i] *100);
           // console.log({total,i})
-          return {bG: level.b, b: Math.round(level.b/total*100) , 
+          return {g:g,bG: level.b, b: Math.round(level.b/total*100) , 
                   wG: level.w, w: Math.round(level.w/total*100) , 
                   tG:level.t , t: Math.round(level.t/total*100),
                   total: total, popularity : popularity,
@@ -40,7 +40,7 @@
   <div class='container1' >
    
     {#each posData as t,i}
-
+ <Tooltip title="{name[i]}: Black :{t.bG},  Tie: {t.tG}, White :{t.wG} "> 
         <div class="row">
 
 
@@ -49,24 +49,20 @@
           </div>
           <div class="bar-container">
             {#if t.b !=0  }
-            <Tooltip title="{t.bG}"> 
             <div class="bar val-a" style="flex-basis: {t.b}%"> {t.b}% </div>
-           </Tooltip>
             {/if}
         
-            {#if t.t !=0  }
-            <Tooltip title="{t.tG}"> 
-            <div class="bar val-b" style="flex-basis: {t.t}%">{t.t}%</div>
-          </Tooltip>
+            {#if t.t !=0  }           
+            <div class="bar val-b" style="flex-basis: {t.t}%">{t.t}%</div>          
             {/if}
-            {#if t.w !=0  }
-            <Tooltip title="{t.wG}"> 
-            <div class="bar val-c" style="flex-basis: {t.w}%">{t.w}%</div>
-          </Tooltip>
+
+            {#if t.w !=0  }            
+            <div class="bar val-c" style="flex-basis: {t.w}%">{t.w}%</div>        
             {/if}
           </div>
-  
+ 
         </div>
+      </Tooltip>
     {/each}
  
     </div>
