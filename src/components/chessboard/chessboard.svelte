@@ -49,6 +49,7 @@
         //console.log('Vars', unsubscribeFen, curr_fen, 'Fen', fen);
         copy_fen = board.fen();
         copyFenField();
+        curr_fen.set(copy_fen);
 	}
 
 	function onDrop (source, target, piece, newPos, oldPos, orientation) {

@@ -13,7 +13,7 @@
         posData = new_fen.map((level,i) => {
            let g = [level.b,level.t,level.w];
           let total = level.b +level.w+ level.t;
-          let popularity = Math.round(total / gameTotal[i] *100);
+          let popularity = (total / gameTotal[i] *100).toFixed(2);
           // console.log({total,i})
           return {g:g,bG: level.b, b: Math.round(level.b/total*100) , 
                   wG: level.w, w: Math.round(level.w/total*100) , 
@@ -35,12 +35,12 @@
     <h1>
         Game Results by Experience Level 
     </h1>
-  
-   
+    <h3>Eventual outcome for games that reach this position</h3>
+
   <div class='container1' >
-   
+
     {#each posData as t,i}
- <Tooltip title="{name[i]}: Black :{t.bG},  Tie: {t.tG}, White :{t.wG} "> 
+      <Tooltip title="Game counts for {name[i] || 0}: Black {t.bG || 0}, Tie {t.tG || 0}, White {t.wG || 0} "> 
         <div class="row">
 
 
@@ -68,13 +68,15 @@
     </div>
  
     <h1 align="center" font-size= "28"> Position Popularity by Experience Level </h1>
+    <h3>% of games that reach this position</h3>
+
     <!-- <svg height= "200px" transform= "translate(20, 0)" >
       <g transform= "translate(0,   25 )"> 
       
         <g transform= "translate(0,   25 )"> 
         {#each posData as t,  i}
             <g transform= {`translate(100, ${ i * 35 })`}>
-                <rect  width="{t.popularity}" height = "30" fill = "darkgray" />
+                <rect  width="{t.popularity}" height = "30" fill = "gray" />
                 <text  text-anchor="end" dominant-baseline= "middle" x="-5" y="15">{name[i]}</text>
                 <text  fill= black dominant-baseline= "middle" x={t.popularity- 75} y="15">{t.popularity} %</text>
 
@@ -86,10 +88,9 @@
     </svg> -->
 
     <div class='container1' >
- 
       {#each posData as t,i}
-      <Tooltip title="{t.total}"> 
-          <div class="row">
+      <Tooltip title="Game counts: Beginner {posData[0].total || 0}, Intermediate {posData[1].total || 0}, Advanced {posData[2].total || 0}, Pro {posData[3].total || 0}"> 
+        <div class="row">
             
             <div class="label">
               <p text-align= "right" >{name[i]}</p> 
@@ -97,10 +98,8 @@
          
             <div class="bar-container">
             
-              <div class="bar val-{[i]}" style="flex-basis: {t.popularity}%">{t.popularity}%</div>
-            
+              <div class="bar val-{[i]}" style="flex-basis: {Math.round(t.popularity/Math.max(...posData.map(p=>p.popularity))*100)}%">{t.popularity}%</div>
            </div>
-         
           </div>
            </Tooltip>
       {/each}
@@ -116,7 +115,7 @@
         flex: 1;
         min-width: 300px;
  
-        background-color: gray;
+        background-color: lightgray;
 
     }
     div.container1 {
@@ -125,7 +124,7 @@
         margin: 35px;
         width: 750px;
         height: 250px;
-        background-color: gray;
+        background-color: lightgray;
        
     }
  

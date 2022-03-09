@@ -37,6 +37,7 @@
             .sort((a,b) => b[1][0] - a[1][0]);   // sort by count
         console.log(tmpMovesArr)
         const nextMovesArrAll = tmpMovesArr.map(([fen, [count, san]]) => {  // transform to object from nested arrays
+            if (isNaN(count)) return {san, count:0, accCount:0, fen}
             accCount += count;
             return {san, count, accCount, fen}
         });
@@ -137,6 +138,7 @@
             .sort((a,b) => b[1]['count'] - a[1]['count']);   // sort by count
         const nextMovesArr2All = tmpMovesArr2.map((s) => {  
             const [fen, {count, prevFens, san}] = s;
+            if (isNaN(count)) return {san, count:0, accCount:0, fen, prevFens:[]}
             // transform to object from nested arrays
             accCount += count;
             return {san, count, accCount, fen, prevFens}
@@ -191,12 +193,12 @@
         {aggNextMove} {nextMovesArr} {nextMovesTotal} {nextMovesArrDict}
         {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} {nextMovesArrDict2}
     />
-    <div style="display: flex; flex-direction: row;">
+    <!-- <div style="display: flex; flex-direction: row;">
         <label>
             <input type="checkbox" on:click={() => toggleColorByPiece()}/>
             Generate colors by piece (default is index)
         </label>
-    </div>
+    </div> -->
 </div>
 
 <style>

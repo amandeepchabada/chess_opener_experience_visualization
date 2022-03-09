@@ -59,6 +59,7 @@
             }, []);
             const nxtFenList = [...new Set(fullFenDataNxtDup)];
             //console.log({nxtFenList, nextMovesArr2, f:nextMovesArrDict2[nxtFenList[0]]})
+            
             // translate into curves
             const vCentCurr = vc(accCount, count, nextMovesTotal);
             let vOffsetAcc = accCount - count;  // vertical offset accumulator (avoid overlap in start)
@@ -66,7 +67,7 @@
             curves = nxtFenList.map((nxtFen, i) => {
                 const nxt = nextMovesArrDict2[nxtFen]; 
                 //console.log({nxtFen, nxt})
-                const thickness = nxt['count']/nextMovesTotal*h;
+                const thickness = nxt['count']/nextMovesTotal2*h;
                 const vCentNext = vc(nxt['accCount'], nxt['count'], nextMovesTotal2);
                 const vOffset = (vOffsetAcc)*h/nextMovesTotal + thickness/2;
                 vOffsetAcc += nxt['count'];
@@ -77,10 +78,10 @@
                     y1: vOffset,
                     y2: vCentNext,
                     t: thickness,  
-                    c: {san, i},
+                    c: {san, i:nxt['i']},
                 };
             });
-            // other line
+            // "other" line
             const thickness = (count - acc)/nextMovesTotal*h;
             const y1 = (accCount)*h/nextMovesTotal - thickness/2;
             console.log('f',{y1, thickness});
@@ -117,20 +118,28 @@
 <svg width={w} height={h+20} >
     <g class='bars-1'>
         <g transform="translate(0,{th})">
-            {#each nextMovesArr as data, i}
-                <StackedBar {data} {i} {sizing} {nextMovesTotal} 
-                    {hideTooltip} {showTooltip}/>        
-            {/each}
+            {#if nextMovesArr2.length > 0}
+                {#each nextMovesArr as data, i}
+                    <StackedBar {data} {i} {sizing} {nextMovesTotal} 
+                        {hideTooltip} {showTooltip}/>        
+                {/each}
+            {:else}
+                <text transform="translate(30,20)">No games found</text>
+            {/if}
         </g>
     </g>
     <g class='bars-2' transform="translate({w-bw},0)">
         <g transform="translate(0,{th})">
-            {#each nextMovesArr2 as data, i}
-                <StackedBar {data} {i} {sizing} 
-                    nextMovesTotal={nextMovesTotal2} 
-                    {hideTooltip} {showTooltip}
-                />
-            {/each}
+            {#if nextMovesArr2.length > 0}
+                {#each nextMovesArr2 as data, i}
+                    <StackedBar {data} {i} {sizing} 
+                        nextMovesTotal={nextMovesTotal2} 
+                        {hideTooltip} {showTooltip}
+                    />
+                {/each}
+            {:else}
+                <text transform="translate(-60,20)">No games found</text>
+            {/if}
         </g>
     </g>
     {#if tooltipIsShown}

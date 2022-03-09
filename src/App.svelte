@@ -13,6 +13,12 @@
 		.then(data => {gameDataStore.set(data)});
 </script>
 
+<svelte:head>
+	<title>Chess Viz</title>
+	<link rel="icon" type="image/svg" href={'./img/chesspieces/wikipedia/wQ.png'} />
+	<html lang="en" />
+</svelte:head>
+
 <main>
 	<Header />
 
@@ -38,5 +44,6 @@
         flex-direction: row;
         justify-content: center;
         flex-wrap: wrap;
+		background-color: lightgray;
     }
 </style>
