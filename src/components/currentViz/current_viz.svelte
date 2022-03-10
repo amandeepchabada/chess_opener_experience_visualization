@@ -70,22 +70,6 @@
     <h1 align="center" font-size= "28"> Position Popularity by Experience Level </h1>
     <h3>% of games that reach this position</h3>
 
-    <!-- <svg height= "200px" transform= "translate(20, 0)" >
-      <g transform= "translate(0,   25 )"> 
-      
-        <g transform= "translate(0,   25 )"> 
-        {#each posData as t,  i}
-            <g transform= {`translate(100, ${ i * 35 })`}>
-                <rect  width="{t.popularity}" height = "30" fill = "gray" />
-                <text  text-anchor="end" dominant-baseline= "middle" x="-5" y="15">{name[i]}</text>
-                <text  fill= black dominant-baseline= "middle" x={t.popularity- 75} y="15">{t.popularity} %</text>
-
-            </g>  
-        
-        {/each}
-    </g>  
-    </g> 
-    </svg> -->
 
     <div class='container1' >
       {#each posData as t,i}
@@ -122,31 +106,28 @@
         flex: 1;
         min-width: 300px;
         margin: 35px;
-        width: 750px;
+        width: 550px;
         height: 250px;
         background-color: lightgray;
        
     }
  
-    svg {
-        border: 1px solid black;
-        width: 90%;
-        
-
-    }
     .row {
     display: flex;
     align-items: stretch;
     align-items: right;
     justify-content: right;
-    outline: solid 1px black;
+    outline: solid 1px rgb(61, 61, 61);
     }
 
     .row .label {
     flex: 0 0 120px;
-
+    background: rgb(95, 88, 88);
+    color: white;
+    font-weight: bold;
     font-size: 18px;
-    
+    border: 3px solid rgba(0, 0, 0, 0.068);
+
     }
 
     .row .bar-container {
@@ -160,6 +141,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+   
     }
 
     .val-a { background: black; color: white}
@@ -170,6 +152,6 @@
     .val-c1 { background: rgba(255, 255, 255, 0.959) ; color: rgb(167, 0, 0)}
     .val-0 { background:  #ffff99 ; color: black }
     .val-1 { background:  #fdc086; color: black }
-    .val-2 { background: #beaed4; color:white }
-    .val-3 { background:  #7fc97f; color:white }
+    .val-2 { background: #beaed4; color:black }
+    .val-3 { background:  #7fc97f; color:black }
 </style>
