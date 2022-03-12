@@ -12,10 +12,6 @@
     let nextMovesArrDict2 = {};
     let nextMovesTotal2 = 0;  // total sum of next moves
 
-    function toggleColorByPiece() {
-        // TODO
-    }
-
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
         console.log({newDataArr})
         aggNextMove = newDataArr.reduce((previousValue, currentValue, i_reduce) => {
@@ -193,12 +189,12 @@
         {aggNextMove} {nextMovesArr} {nextMovesTotal} {nextMovesArrDict}
         {aggNextMove2} {nextMovesArr2} {nextMovesTotal2} {nextMovesArrDict2}
     />
-    <!-- <div style="display: flex; flex-direction: row;">
+    <div style="display: flex; flex-direction: row;">
         <label>
             <input type="checkbox" on:click={() => toggleColorByPiece()}/>
             Generate colors by piece (default is index)
         </label>
-    </div> -->
+    </div>
 </div>
 
 <style>

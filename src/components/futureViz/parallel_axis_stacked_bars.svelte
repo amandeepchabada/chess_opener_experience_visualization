@@ -1,7 +1,7 @@
 <script>
     import StackedBar from './stacked_bar.svelte';
     import NextMoveGraph from './next_move_graph.svelte';
-    import { gameDataStore, genColor, colorByPieceStore } from '../../state';
+    import { gameDataStore, genColor, colorByPieceStore, selectedSquare } from '../../state';
 
     export let aggNextMove;  // aggreagate next move (sum over levels)
     export let nextMovesArr;  // array of moves and counts: eg {"move": "b2g2", count: 42}
@@ -17,6 +17,9 @@
     let tooltipIsShown;
     let tooltipData;
     function showTooltip(evt, {san, count, fen, accCount, prevFens}) {
+        selectedSquare.set(san.slice(-2));
+        console.log('selectedSquare', san.slice(-2))
+
         let tooltip = document.getElementById("tooltip");
         tooltip.innerHTML = `${san} was played ${count} times (${Math.round(count/nextMovesTotal*100)}%)`;
         tooltip.style.display = "block";
@@ -42,14 +45,14 @@
                     c: {san, i},
                 }
             });
-            // curves.push({
-            //     x1: xmin,
-            //     x2: xmax/2,
-            //     y1: vOffset,
-            //     y2: h-thickness/2,
-            //     t: thickness,  
-            //     c: 'gray',
-            // });
+            curves.push({
+                x1: xmin,
+                x2: xmax/2,
+                y1: vOffset,
+                y2: h-thickness/2,
+                t: thickness,  
+                c: 'darkgray',
+            });
         }
         else {
             // need list of next fens
@@ -100,6 +103,7 @@
     }
 
     function hideTooltip() {
+        selectedSquare.set(false);
         var tooltip = document.getElementById("tooltip");
         tooltip.style.display = "none";
         tooltipIsShown = false;
@@ -158,10 +162,6 @@
 <style>
     text {
         font-size: 15px;
-    }
-
-    .bar {
-        cursor: pointer;
     }
 
     svg {

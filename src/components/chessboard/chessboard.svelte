@@ -6,7 +6,7 @@
 
 <script>
 	import { onMount } from 'svelte';
-    import { curr_fen } from '../../state';
+    import { curr_fen, selectedSquare } from '../../state';
 
     import { Chess } from '../../../node_modules/chess.js/chess';
 
@@ -19,6 +19,9 @@
     var game;
     var whiteSquareGrey = '#a9a9a9';
     var blackSquareGrey = '#696969';
+
+    // TODO unsubscribeSquare = selectedSquare.subscribe(s => // highlight squares )
+    // onDestroy(unsubscribeSquare);
 
     onMount(() => {
         console.log('Mounted');

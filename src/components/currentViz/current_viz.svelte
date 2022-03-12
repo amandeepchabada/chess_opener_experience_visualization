@@ -49,15 +49,15 @@
           </div>
           <div class="bar-container">
             {#if t.b !=0  }
-            <div class="bar val-a" style="flex-basis: {t.b}%"> {t.b}% </div>
+              <div class="bar val-a" style="flex-basis: {t.b}%"> {t.b}% </div>
             {/if}
         
             {#if t.t !=0  }           
-            <div class="bar val-b" style="flex-basis: {t.t}%">{t.t}%</div>          
+              <div class="bar val-b" style="flex-basis: {t.t}%">{t.t}%</div>          
             {/if}
 
             {#if t.w !=0  }            
-            <div class="bar val-c" style="flex-basis: {t.w}%">{t.w}%</div>        
+              <div class="bar val-c" style="flex-basis: {t.w}%">{t.w}%</div>        
             {/if}
           </div>
  

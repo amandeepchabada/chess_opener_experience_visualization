@@ -21,7 +21,7 @@
 
 <div
 	on:mouseover={mouseOver}
-  on:mouseleave={mouseLeave}
+    on:mouseleave={mouseLeave}
 	on:mousemove={mouseMove}>
 	<slot />
 </div>

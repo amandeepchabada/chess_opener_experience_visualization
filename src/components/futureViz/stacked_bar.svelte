@@ -6,7 +6,7 @@
     export let hideTooltip, showTooltip;
     export let nextMovesTotal;
     export let sizing;
-    
+
     const {w, h, bw} = sizing;
     $: ({fen, count, accCount, san} = data);
 </script>
