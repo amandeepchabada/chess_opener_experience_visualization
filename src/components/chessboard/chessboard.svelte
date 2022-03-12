@@ -30,7 +30,6 @@
         playerChance(false);
         //game = new Chess();
         //console.log('Game: ', game);
-
     });
 
     // Gets called by "./chessboard-1.0.0.min.js" after onMount()
@@ -231,6 +230,8 @@
 
     function playerChance(flag) {
         //console.log('Here', flag);
+        const h1 = document.createElement("h1");
+
         var parEle = document.querySelector('#who-plays');
         var tex_to_add;
         if (flag == false) {
@@ -242,7 +243,8 @@
             tex_to_add = document.createTextNode('Move of: ' + game.turn());
         }
         
-        parEle.appendChild(tex_to_add);
+        h1.appendChild(tex_to_add);
+        parEle.appendChild(h1)
     }
 
 </script>
