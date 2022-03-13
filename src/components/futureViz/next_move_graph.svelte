@@ -1,7 +1,8 @@
 <script>
 	import { draw } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-    import {genColor, colorByPieceStore} from '../../state';
+    import {colorByPieceStore} from '../../state';
+    import {genColor} from '../../utils';
 
     export let tooltipData;
     export let nextMovesTotal;
@@ -34,8 +35,26 @@
     $: paths = curves;
 
     function color(path) {
-        if ($colorByPieceStore) return genColor({san: path.c.san});
-        return genColor({i: path.c.i});
+        if (path.c) return path.c; // if given color
+        if ($colorByPieceStore) return genColor({san: path.san});
+        return genColor({i: path.i});
+    }
+
+    function genColorIndex(i) {
+        const colors = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#bc80bd','#ccebc5','#ffed6f']
+        return colors[i % colors.length]
+    }
+    function genColorPiece(san) {
+        // get piece char from beginning of san
+        const colors = {
+            'B': '#ffffb3',
+            'N': '#bebada',
+            'Q': '#fb8072',
+            'R': '#80b1d3',
+            'K': '#fdb462',
+        }
+        if (san[0] in colors) return colors[san[0]];
+        return '#b3de69'  // for pawns
     }
 
 </script>

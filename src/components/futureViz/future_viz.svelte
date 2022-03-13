@@ -1,7 +1,8 @@
 <script>
     import Chart from './parallel_axis_stacked_bars.svelte';
     import {onDestroy} from 'svelte'
-    import { gameDataStore, fenDataStore } from '../../state';
+    import { gameDataStore, fenDataStore, colorByPieceStore } from '../../state';
+    import { pieceNameColors } from '../../utils';
 
     let aggNextMove = {}  // aggreagate next move (sum over levels)
     let nextMovesArr = [];  // array of moves and counts: eg {"move": "b2g2", count: 42}
@@ -166,9 +167,12 @@
         // nextMovesArr2 = [...nextMovesArr2Filt, otherMoves2]; // add other moves
         console.log('Parsed 2 move viz data:', {nextMovesArr2, aggNextMove2, nextMovesTotal2});
     });
-
     // prevent memory leak(s)
     onDestroy(unsubscribeFen);  
+
+    function toggleColorByPiece(curr) {
+        colorByPieceStore.set(!curr);
+    }
 
     const w = 380;
     const h = 720;
@@ -191,10 +195,25 @@
     />
     <div style="display: flex; flex-direction: row;">
         <label>
-            <input type="checkbox" on:click={() => toggleColorByPiece()}/>
+            <input type="checkbox" on:click={() => toggleColorByPiece($colorByPieceStore)}/>
             Generate colors by piece (default is index)
         </label>
     </div>
+    <!-- color key for when bar is colored by piece -->
+    {#if $colorByPieceStore}
+        <div>
+            <svg width={w} height={20} >
+                {#each pieceNameColors as [piece, color], i}
+                    <g transform="translate({i*65},0)">
+                        <rect cx='0' cy='10' height={15} width={15} fill={color}>
+                        </rect>
+                        <text x='15' y='12'>{piece}</text>
+                    </g>
+                {/each}
+                </svg>
+
+        </div>
+    {/if}
 </div>
 
 <style>

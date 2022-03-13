@@ -1,7 +1,7 @@
 <script>
     import StackedBar from './stacked_bar.svelte';
     import NextMoveGraph from './next_move_graph.svelte';
-    import { gameDataStore, genColor, colorByPieceStore, selectedSquare } from '../../state';
+    import { gameDataStore, selectedSquare } from '../../state';
 
     export let aggNextMove;  // aggreagate next move (sum over levels)
     export let nextMovesArr;  // array of moves and counts: eg {"move": "b2g2", count: 42}
@@ -31,6 +31,7 @@
         const xmax = w-bw;
         const vc = (acc, cnt, total) => (acc-cnt/2)*h/total + th; // vertical center
         if (prevFens) {
+            // two move bar is selected
             const vCentCurr = vc(accCount, count, nextMovesTotal2);
             curves = Object.entries(prevFens).map( ([prevFen, countPrevFen]) => {
                 const {accCount: accCntNxt, count: cntNxt, san, i} = nextMovesArrDict[prevFen]
@@ -41,8 +42,9 @@
                     x2: xmax,
                     y1: vCentNext,
                     y2: vCentCurr,
+                    san: san,
+                    i: i,
                     t: (countPrevFen)/nextMovesTotal2*h,
-                    c: {san, i},
                 }
             });
             curves.push({
@@ -55,6 +57,7 @@
             });
         }
         else {
+            // next move bar selected
             // need list of next fens
             const fullFenDataNxtDup = ['0', '1', '2', '3'].reduce((acc, level) => {
                 const nxtFensAtLvl = $gameDataStore[level][fen]['nxt'].map(e=>e[0]);
@@ -81,7 +84,8 @@
                     y1: vOffset,
                     y2: vCentNext,
                     t: thickness,  
-                    c: {san, i:nxt['i']},
+                    san: nxt['san'],
+                    i: nxt['i'],
                 };
             });
             // "other" line

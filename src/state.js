@@ -7,6 +7,7 @@ export const initial_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 export const curr_fen = writable(initial_fen); // TODO: ensure initial_fen is used at some point in the future
 
 export const selectedSquare = writable(false);  // false when nothing selected
+export const colorByPieceStore = writable(false);  // for selecting the colorscheme in future moves
 
 const test_fenData = [
     {"b": 105023, "w": 115498, "t": 42, "nxt": {"e7e6": 1, "g8f6": 1 }},  // beginner
@@ -14,29 +15,6 @@ const test_fenData = [
     {"b": 105023, "w": 984984, "t": 66, "nxt": {"e7e6": 1, "g8f6": 1 }},  // advanced
     {"b": 0, "w": 115498, "t": 9263, "nxt": {"e7e6": 1, "g8f6": 1 }},  // pro
 ]
-
-// todo enable toggle
-function genColorIndex(i) {
-    const colors = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#bc80bd','#ccebc5','#ffed6f']
-    return colors[i % colors.length]
-}
-export const colorByPieceStore = writable(false);
-function genColorPiece(san) {
-    // get piece char from beginning of san
-    const colors = {
-        'B': '#ffffb3',
-        'N': '#bebada',
-        'Q': '#fb8072',
-        'R': '#80b1d3',
-        'K': '#fdb462',
-    }
-    if (san[0] in colors) return colors[san[0]];
-    return '#b3de69'  // for pawns
-}
-export function genColor({i, san}) {
-    if (san) genColorPiece(san);
-    return genColorIndex(i);
-}; 
 
 export const fenDataStore = derived(  // array of level objects
     [curr_fen, gameDataStore], 

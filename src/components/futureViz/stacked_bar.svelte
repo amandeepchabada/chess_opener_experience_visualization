@@ -1,11 +1,18 @@
 <script>
-    import {genColor, colorByPieceStore, curr_fen} from '../../state';
+    import { onDestroy } from 'svelte';
+
+    import {colorByPieceStore, curr_fen} from '../../state';
+    import {genColor} from '../../utils';
 
     export let i;
     export let data;
     export let hideTooltip, showTooltip;
-    export let nextMovesTotal;
+    export let nextMovesTotal; 
     export let sizing;
+    let tstbool = true;
+
+    const interval = setInterval(() => tstbool = !tstbool, 500);
+    onDestroy(() => clearInterval(interval));
 
     const {w, h, bw} = sizing;
     $: ({fen, count, accCount, san} = data);
@@ -14,6 +21,8 @@
         curr_fen.set(fen);
         hideTooltip();
     }
+
+
 </script>
 
 <!-- on:mousemove={(evt)=>showTooltip(evt, data)}  -->
@@ -25,6 +34,7 @@
     <rect width={bw} height='{count/nextMovesTotal*h}'
         transform="translate(0,{(accCount-count)/nextMovesTotal*h})"
         fill={$colorByPieceStore ? genColor({san}) : genColor({i})}
+        stroke={$colorByPieceStore ? 'black' : undefined}
     />            
     {#if count/nextMovesTotal*h > 20} 
     <!-- if larger than 20 pixels, show label -->
