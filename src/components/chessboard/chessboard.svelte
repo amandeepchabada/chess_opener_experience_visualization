@@ -5,7 +5,7 @@
 </svelte:head>
 
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
     import { curr_fen, selectedSquare } from '../../state';
 
     import { Chess } from '../../../node_modules/chess.js/chess';
@@ -22,6 +22,15 @@
 
     // TODO unsubscribeSquare = selectedSquare.subscribe(s => // highlight squares )
     // onDestroy(unsubscribeSquare);
+
+    const unsubscribeFen = curr_fen.subscribe(new_fen => {
+        if (new_fen != copy_fen && board) {
+            // if fen actually changed, update board
+            board.position(new_fen);
+        }
+    })
+    onDestroy(unsubscribeFen);  // prevent memory leak
+
 
     onMount(() => {
         console.log('Mounted');

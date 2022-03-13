@@ -1,5 +1,5 @@
 <script>
-    import {genColor, colorByPieceStore} from '../../state';
+    import {genColor, colorByPieceStore, curr_fen} from '../../state';
 
     export let i;
     export let data;
@@ -9,12 +9,18 @@
 
     const {w, h, bw} = sizing;
     $: ({fen, count, accCount, san} = data);
+    
+    function barClicked() {
+        curr_fen.set(fen);
+        hideTooltip();
+    }
 </script>
 
 <!-- on:mousemove={(evt)=>showTooltip(evt, data)}  -->
 <g  id={`bar-${san}`} class='bar'
     on:mouseenter={(evt)=>showTooltip(evt, data)} 
     on:mouseleave={hideTooltip} 
+    on:click={barClicked}
 >
     <rect width={bw} height='{count/nextMovesTotal*h}'
         transform="translate(0,{(accCount-count)/nextMovesTotal*h})"
@@ -33,11 +39,6 @@
 <style>
     .bar {
         cursor: pointer;
-    }
-
-    svg {
-        display: block;
-        margin: auto;
     }
 
     #tooltip {
