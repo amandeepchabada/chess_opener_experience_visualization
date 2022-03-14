@@ -40,6 +40,6 @@
 		position: absolute;
 		font-weight: bold;
 		white-space: pre;
-		text-align: center;
+		text-align: left;
 	}
 </style>
