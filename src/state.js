@@ -28,7 +28,7 @@ export const fenDataStore = derived(  // array of level objects
             }
             return $gameDataStore[i][$curr_fen]  // grab data for level
         });
-        console.log({vals})
+        console.log('new fenDataStore vals',{vals})
         return vals
     },
     test_fenData  // initial value

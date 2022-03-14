@@ -18,7 +18,6 @@
     let tooltipData;
     function showTooltip(evt, {san, count, fen, accCount, prevFens}) {
         selectedSquare.set(san.slice(-2));
-        console.log('selectedSquare', san.slice(-2))
 
         let tooltip = document.getElementById("tooltip");
         tooltip.innerHTML = `${san} was played ${count} times (${Math.round(count/nextMovesTotal*100)}%)`;
@@ -35,7 +34,7 @@
             const vCentCurr = vc(accCount, count, nextMovesTotal2);
             curves = Object.entries(prevFens).map( ([prevFen, countPrevFen]) => {
                 const {accCount: accCntNxt, count: cntNxt, san, i} = nextMovesArrDict[prevFen]
-                console.log({prevFen, aggNextMove});
+                //console.log({prevFen, aggNextMove});
                 const vCentNext = vc(accCntNxt, cntNxt, nextMovesTotal); // vertical center of previous move
                 return {
                     x1: xmin,
@@ -91,7 +90,6 @@
             // "other" line
             const thickness = (count - acc)/nextMovesTotal*h;
             const y1 = (accCount)*h/nextMovesTotal - thickness/2;
-            console.log('f',{y1, thickness});
             curves.push({
                 x1: xmin,
                 x2: xmax/2,
