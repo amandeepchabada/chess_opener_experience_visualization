@@ -32,7 +32,7 @@
 
             // If Height == 100%, bottom border is lost
             sq_div.style.height = "80%";
-            sq_div.style.border = '5px solid #FF0000';
+            sq_div.style.border = '5px solid #0000FF';
             
             sq.appendChild(sq_div);
             //console.log(sq_div);
