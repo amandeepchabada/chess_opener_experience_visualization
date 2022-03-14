@@ -330,7 +330,7 @@
     <div class="btn-div">
         <button id="backBtn" on:click={setBack}>Back</button>
         <button id="startBtn" on:click={initBoard}>Start Position</button>
-        <button id="clearBtn" on:click={board.clear}>Clear Board</button>
+        <!-- <button id="clearBtn" on:click={board.clear}>Clear Board</button> -->
     </div>
     <div id="fen-copy-div">
         <input type="text" value="" id="copy-fen">
