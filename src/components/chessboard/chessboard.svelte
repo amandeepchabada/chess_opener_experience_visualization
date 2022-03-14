@@ -256,6 +256,18 @@
         parEle.appendChild(h1)
     }
 
+    function setBack() {
+        //console.log('In getCurrentFen. Copy Fen: ', copy_fen, 'Move of', curr_turn, 'Prev Fen', prev_fen);
+        if (copy_fen == initial_pos && game.history().length == 0) {
+            alert("No Moves played previously");
+        }
+        else {
+            game.undo();
+            board.position(game.fen(), true);
+        }
+        console.log('In setBack(). Copy Fen or Current Fen: ', copy_fen);
+    }
+
 </script>
 
 
@@ -271,6 +283,7 @@
     </div>
     <div id='board' style="width: 400px"></div>
     <div class="btn-div">
+        <button id="backBtn" on:click={setBack}>Back</button>
         <button id="startBtn" on:click={initBoard}>Start Position</button>
         <button id="clearBtn" on:click={board.clear}>Clear Board</button>
     </div>
@@ -306,7 +319,7 @@
         display: flex;
         flex-direction: row;
     }
-    #startBtn, #clearBtn {
+    #startBtn, #clearBtn, #backBtn {
         float: left;
         width: 100%;
         height: 75%;
