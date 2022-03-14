@@ -288,7 +288,7 @@
         }
         else if (flag == true){
             parEle.innerHTML = '';
-            tex_to_add = document.createTextNode('Move of: ' + game.turn());
+            tex_to_add = document.createTextNode('Move of: ' + (game.turn()=='w'?'White':'Black'));
         }
         
         h1.appendChild(tex_to_add);
