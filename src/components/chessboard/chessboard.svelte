@@ -6,7 +6,7 @@
 
 <script>
 	import { onMount, onDestroy } from 'svelte';
-    import { curr_fen, selectedSquare } from '../../state';
+    import { curr_fen, selectedSquare, legal_moves } from '../../state';
 
     import { Chess } from '../../../node_modules/chess.js/chess';
 
@@ -15,7 +15,6 @@
     let fen = 'start';
     let initial_pos = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
     var legal = true;
-    let legal_moves = {};
 
     var game;
     var whiteSquareGrey = '#a9a9a9';
@@ -62,6 +61,11 @@
     })
     onDestroy(unsubscribeFen);  // prevent memory leak
 
+    // Subscription to Legal Moves is unnecessary as Legal Moves is only set here.
+    const unsubscribeLegalMoves = legal_moves.subscribe(legal_mvs => {
+            console.log('Legal Moves: ', legal_mvs);
+    });
+    onDestroy(unsubscribeLegalMoves);
 
     onMount(() => {
         console.log('Mounted');
@@ -304,8 +308,9 @@
     }
 
     function getLegalMoves() {
-        legal_moves = game.moves({verbose: true});
-        //console.log('In getLegalMoves()', legal_moves);
+        legal_moves.set(game.moves({verbose: true}));
+        //console.log('In getLegalMoves()', legal_moves.subscribe(legal_moves));
+        //onDestroy(unsubscribeLegalMoves);
     }
 
 </script>
