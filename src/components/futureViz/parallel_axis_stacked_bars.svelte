@@ -46,14 +46,14 @@
                     t: (countPrevFen)/nextMovesTotal2*h,
                 }
             });
-            curves.push({
-                x1: xmin,
-                x2: xmax/2,
-                y1: vOffset,
-                y2: h-thickness/2,
-                t: thickness,  
-                c: 'darkgray',
-            });
+            // curves.push({
+            //     x1: xmin,
+            //     x2: xmax/2,
+            //     y1: vOffset,
+            //     y2: h-thickness/2,
+            //     t: thickness,  
+            //     c: 'darkgray',
+            // });
         }
         else {
             // next move bar selected
