@@ -32,13 +32,14 @@
 
 <style>
 	.tooltip {
-		border: 1px solid #ddd;
+		border: 1px solid darkgrey;
 		box-shadow: 1px 1px 1px #ddd;
-		background: white;
-		border-radius: 4px;
+		background-image: linear-gradient(lightgray,white);
+		border-radius: 5px;
 		padding: 4px;
 		position: absolute;
-	
-   
+		font-weight: bold;
+		white-space: pre;
+		text-align: left;
 	}
 </style>

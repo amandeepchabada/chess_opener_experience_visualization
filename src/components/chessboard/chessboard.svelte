@@ -6,7 +6,7 @@
 
 <script>
 	import { onMount, onDestroy } from 'svelte';
-    import { curr_fen, selectedSquare } from '../../state';
+    import { curr_fen, selectedSquare, legal_moves } from '../../state';
 
     import { Chess } from '../../../node_modules/chess.js/chess';
 
@@ -20,8 +20,38 @@
     var whiteSquareGrey = '#a9a9a9';
     var blackSquareGrey = '#696969';
 
-    // TODO unsubscribeSquare = selectedSquare.subscribe(s => // highlight squares )
-    // onDestroy(unsubscribeSquare);
+    // TODO 
+    const unsubscribeSquare = selectedSquare.subscribe(selectedSq => {
+        console.log('Here', selectedSq);
+        var sq = document.querySelector('#board .square-' + selectedSq);
+        var sq_div = document.createElement('div');
+
+        if (sq != null) {
+            sq_div.setAttribute('class', 'sq_div');
+
+            // If Height == 100%, bottom border is lost
+            sq_div.style.height = "80%";
+            sq_div.style.border = '5px solid #0000FF';
+            
+            sq.appendChild(sq_div);
+            //console.log(sq_div);
+            //sq.style.padding = '1px';
+            //sq.style.margin = '1px';
+            //sq.style.border = 'dashed #FF0000';
+        }
+        else {
+            //removeGreySquares();
+            sq_div = document.querySelector('.sq_div');
+
+            if (sq_div != null) {
+                sq_div.remove();
+            }
+            
+            //console.log('In Else', sq_div, sq);
+        }
+        
+    })
+    onDestroy(unsubscribeSquare);
 
     const unsubscribeFen = curr_fen.subscribe(new_fen => {
         if (new_fen != copy_fen && board) {
@@ -31,6 +61,11 @@
     })
     onDestroy(unsubscribeFen);  // prevent memory leak
 
+    // Subscription to Legal Moves is unnecessary as Legal Moves is only set here.
+    const unsubscribeLegalMoves = legal_moves.subscribe(legal_mvs => {
+            console.log('Legal Moves: ', legal_mvs);
+    });
+    onDestroy(unsubscribeLegalMoves);
 
     onMount(() => {
         console.log('Mounted');
@@ -61,6 +96,8 @@
         copy_fen = board.fen();
         copyFenField();
         curr_fen.set(copy_fen);
+
+        getLegalMoves();
 	}
 
 	function onDrop (source, target, piece, newPos, oldPos, orientation) {
@@ -125,6 +162,8 @@
         //console.log('Curr Fen: ', curr_fen);
         
         playerChance(legal);
+
+        getLegalMoves();
     }
 
     function onDragStart (source, piece) {
@@ -256,6 +295,24 @@
         parEle.appendChild(h1)
     }
 
+    function setBack() {
+        //console.log('In getCurrentFen. Copy Fen: ', copy_fen, 'Move of', curr_turn, 'Prev Fen', prev_fen);
+        if (copy_fen == initial_pos && game.history().length == 0) {
+            alert("No Moves played previously");
+        }
+        else {
+            game.undo();
+            board.position(game.fen(), true);
+        }
+        //console.log('In setBack(). Copy Fen or Current Fen: ', copy_fen);
+    }
+
+    function getLegalMoves() {
+        legal_moves.set(game.moves({verbose: true}));
+        //console.log('In getLegalMoves()', legal_moves.subscribe(legal_moves));
+        //onDestroy(unsubscribeLegalMoves);
+    }
+
 </script>
 
 
@@ -271,6 +328,7 @@
     </div>
     <div id='board' style="width: 400px"></div>
     <div class="btn-div">
+        <button id="backBtn" on:click={setBack}>Back</button>
         <button id="startBtn" on:click={initBoard}>Start Position</button>
         <button id="clearBtn" on:click={board.clear}>Clear Board</button>
     </div>
@@ -306,7 +364,7 @@
         display: flex;
         flex-direction: row;
     }
-    #startBtn, #clearBtn {
+    #startBtn, #clearBtn, #backBtn {
         float: left;
         width: 100%;
         height: 75%;
