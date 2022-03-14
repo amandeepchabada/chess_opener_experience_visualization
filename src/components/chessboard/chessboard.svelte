@@ -15,13 +15,44 @@
     let fen = 'start';
     let initial_pos = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
     var legal = true;
+    let legal_moves = {};
 
     var game;
     var whiteSquareGrey = '#a9a9a9';
     var blackSquareGrey = '#696969';
 
-    // TODO unsubscribeSquare = selectedSquare.subscribe(s => // highlight squares )
-    // onDestroy(unsubscribeSquare);
+    // TODO 
+    const unsubscribeSquare = selectedSquare.subscribe(selectedSq => {
+        console.log('Here', selectedSq);
+        var sq = document.querySelector('#board .square-' + selectedSq);
+        var sq_div = document.createElement('div');
+
+        if (sq != null) {
+            sq_div.setAttribute('class', 'sq_div');
+
+            // If Height == 100%, bottom border is lost
+            sq_div.style.height = "80%";
+            sq_div.style.border = '5px solid #FF0000';
+            
+            sq.appendChild(sq_div);
+            //console.log(sq_div);
+            //sq.style.padding = '1px';
+            //sq.style.margin = '1px';
+            //sq.style.border = 'dashed #FF0000';
+        }
+        else {
+            //removeGreySquares();
+            sq_div = document.querySelector('.sq_div');
+
+            if (sq_div != null) {
+                sq_div.remove();
+            }
+            
+            //console.log('In Else', sq_div, sq);
+        }
+        
+    })
+    onDestroy(unsubscribeSquare);
 
     const unsubscribeFen = curr_fen.subscribe(new_fen => {
         if (new_fen != copy_fen && board) {
@@ -61,6 +92,8 @@
         copy_fen = board.fen();
         copyFenField();
         curr_fen.set(copy_fen);
+
+        getLegalMoves();
 	}
 
 	function onDrop (source, target, piece, newPos, oldPos, orientation) {
@@ -125,6 +158,8 @@
         //console.log('Curr Fen: ', curr_fen);
         
         playerChance(legal);
+
+        getLegalMoves();
     }
 
     function onDragStart (source, piece) {
@@ -265,7 +300,12 @@
             game.undo();
             board.position(game.fen(), true);
         }
-        console.log('In setBack(). Copy Fen or Current Fen: ', copy_fen);
+        //console.log('In setBack(). Copy Fen or Current Fen: ', copy_fen);
+    }
+
+    function getLegalMoves() {
+        legal_moves = game.moves({verbose: true});
+        //console.log('In getLegalMoves()', legal_moves);
     }
 
 </script>
