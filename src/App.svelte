@@ -44,6 +44,6 @@
         flex-direction: row;
         justify-content: center;
         flex-wrap: wrap;
-		background-color: lightgray;
+		background-color: lightgrey;
     }
 </style>

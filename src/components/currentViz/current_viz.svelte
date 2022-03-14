@@ -40,7 +40,12 @@
   <div class='container1' >
 
     {#each posData as t,i}
-      <Tooltip title="Game counts for {name[i] || 0}: Black {t.bG || 0}, Tie {t.tG || 0}, White {t.wG || 0} "> 
+      <Tooltip title= "Game counts for
+    {name[i] || 0}: 
+
+    Black- {t.bG || 0}
+    Tie- {t.tG || 0}
+    White- {t.wG || 0} ">
         <div class="row">
 
 
@@ -144,14 +149,15 @@
    
     }
 
-    .val-a { background: black; color: white}
-    .val-b { background: lightgray ; color: black}
-    .val-c { background: white ; color: black}
+    .val-a { background-image:linear-gradient(black,rgb(40, 40, 40)); color: white; border-radius: 10px 0px 0px 10px; margin: 5px 0px 5px 5px;}
+    .val-b { background-image:linear-gradient(rgb(120, 120, 120),rgb(160, 160, 160)); color: black ;margin: 5px 0px 5px 0px;}
+    .val-c { background-image:linear-gradient(rgb(240, 240, 240),white);  color: black; border-radius: 0px 10px 10px 0px; margin: 5px 5px 5px 0px;}
     .val-a1 { background: rgba(0, 0, 0, 0.945); color: rgb(255, 187, 187)}
     .val-b1 { background: rgba(211, 211, 211, 0.932) ; color: rgb(167, 0, 0)}
     .val-c1 { background: rgba(255, 255, 255, 0.959) ; color: rgb(167, 0, 0)}
-    .val-0 { background:  #ffff99 ; color: black }
-    .val-1 { background:  #fdc086; color: black }
-    .val-2 { background: #beaed4; color:black }
-    .val-3 { background:  #7fc97f; color:black }
+    .val-0 { background-image:linear-gradient(to right,rgb(106, 56, 5),rgb(173, 138, 86)); color: black ; border-radius: 10px; margin: 5px}
+    .val-1 { background-image:linear-gradient(to right,rgb(150, 150, 150),rgb(180, 180, 180)); color: black ; border-radius: 10px; margin: 5px}
+    .val-2 { background-image:linear-gradient(to right,rgb(219, 190, 23),rgb(245, 225, 125)); color:black ; border-radius: 10px; margin: 5px}
+    .val-3 { background-image:linear-gradient(to right,rgb(154,197,219),rgb(217,235,244)); color:black ; border-radius: 10px; margin: 5px}
+
 </style>
