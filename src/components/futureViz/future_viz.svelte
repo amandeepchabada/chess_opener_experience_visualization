@@ -17,7 +17,6 @@
         console.log({newDataArr})
         aggNextMove = newDataArr.reduce((previousValue, currentValue, i_reduce) => {
                 if (!currentValue || !currentValue['nxt']) return {...previousValue};  // if no moves, don't add to list
-                console.log('fenDataStore', {currentValue, aggNextMove}, currentValue['nxt'])
                 let newValue = {}
                 Object.entries(currentValue['nxt']).forEach(([_, datum], i) => {  // loop over next moves
                     const fen = datum[0];
@@ -34,7 +33,6 @@
         let accCount = 0;  // count previous sums, useful for translating bars
         let tmpMovesArr = Object.entries(aggNextMove)
             .sort((a,b) => b[1][0] - a[1][0]);   // sort by count
-        console.log(tmpMovesArr)
         const nextMovesArrAll = tmpMovesArr.map(([fen, [count, san]]) => {  // transform to object from nested arrays
             if (isNaN(count)) return {san, count:0, accCount:0, fen}
             accCount += count;
@@ -113,7 +111,6 @@
                 const newFenCnt = newItems[key]['count'];
                 const newFen = newItems[key]['fenPrev'];
                 if (key in prevObj) {  // if previous fen exists, grab data
-                    console.log('feef', prevObj[key]);
                     newItems[key] = {
                         ...newItems[key],
                         count: newFenCnt + prevObj['count'],
@@ -130,7 +127,6 @@
             });
             return {...prevObj, ...newItems};  // overwrite any duplicate fen objects with new ones
         }, {});
-        console.log({aggNextMove2});
 
         accCount = 0;  // count previous sums, useful for translating bars
         const tmpMovesArr2 = Object.entries(aggNextMove2)
