@@ -34,7 +34,7 @@
 		<p style="color: red">While loading an error occurred: {error}</p>
 	{/await}
 
-    <p>Build with Svelte. Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+    <p>Build with Svelte and SVG. Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
 
 <style>
