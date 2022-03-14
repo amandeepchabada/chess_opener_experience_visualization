@@ -16,6 +16,8 @@
     const unsubscribeFen = fenDataStore.subscribe(newDataArr => {
         console.log({newDataArr})
         aggNextMove = newDataArr.reduce((previousValue, currentValue, i_reduce) => {
+                if (!currentValue || !currentValue['nxt']) return {...previousValue};  // if no moves, don't add to list
+                console.log('fenDataStore', {currentValue, aggNextMove}, currentValue['nxt'])
                 let newValue = {}
                 Object.entries(currentValue['nxt']).forEach(([_, datum], i) => {  // loop over next moves
                     const fen = datum[0];
