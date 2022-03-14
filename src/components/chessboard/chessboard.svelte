@@ -319,8 +319,8 @@
 
 <div class="container">
     {#if board==undefined}
-        <div style="width: 400px; height:400px">
-            There was an error rendering the chessboard, please reload the page... 
+        <div style="width: 400px; height:400px;">
+            <h3 style="color:red">There was an error rendering the chessboard, please reload the page... </h3>
         </div>
     {/if}
     <div>
@@ -350,12 +350,11 @@
 
 <style>
     .container {
-        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 500px;
+        width: 700px;
         height: 800px;
         background-color: lightgray;
     }

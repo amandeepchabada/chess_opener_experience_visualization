@@ -113,11 +113,8 @@
 
 <style>
     div.container {
-        flex: 1;
-        min-width: 300px;
- 
+        width: 750px;
         background-color: lightgray;
-
     }
     div.container1 {
         flex: 1;

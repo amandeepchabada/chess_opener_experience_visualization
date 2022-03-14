@@ -220,8 +220,7 @@
         align-items: center;
         justify-content: space-evenly;
         flex-direction: column;
-        flex: 1;
-        min-width: 400px;
+        width: 550px;
         background-color: lightgray;
     }
 
