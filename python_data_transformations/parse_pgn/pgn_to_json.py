@@ -35,7 +35,7 @@ def classify_game(black, white):
         return 2
     return 3
 
-def extract_fens_uci(game, x=5):
+def extract_fens_uci(game, x=10):
     """ returns array of fens for first x+1 moves, not including first one """
 
     fens = []
@@ -55,7 +55,7 @@ def extract_fens_uci(game, x=5):
 
 
 
-def extract_fens(game, x=5):
+def extract_fens(game, x=10):
     """ returns array of fens for first x+1 moves, including first one """
 
     fens = []
@@ -68,7 +68,7 @@ def extract_fens(game, x=5):
 
     return fens
 
-def extract_fens_moveStrs(game, x=5):
+def extract_fens_moveStrs(game, x=10):
     """ returns array of fens for first x+1 moves, including first one """
 
     fens = []
@@ -136,9 +136,9 @@ def add_fen_data(headers, fen, exp, next_fen, moveStr):
 # main code
 start = perf_counter()
 invalid_games = 0
-games = 2_000_000 #2_000_000 #10_000 # 2_000_000 #1_000_000
-backup_every = 100_000
-backup_games = False
+games = 200_000_000 #2_000_000 #10_000 # 2_000_000 #1_000_000
+backup_every = 2_000_000
+backup_games = True
 games_actual = 0
 
 for i in tqdm(range(games)):
@@ -188,6 +188,7 @@ for level, fens in data.items():
         nxtArr = list(d['nxt'].items())  # [(fen, count), ...]
         sortedArr = Sort_Tuple(nxtArr)
         data[level][fen]['nxt'] = sortedArr[:10]
+        # TODO sum up other moves     
 
 filename = "v2_filt10_{:e}.json".format(games_actual)
 with open(filename, "w") as write_file:
